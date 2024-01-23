@@ -791,24 +791,24 @@ LOAD /opt/st/stm32cubeide_1.14.0/plugins/com.st.stm32cube.ide.mcu.externaltools.
  .debug_rnglists
                 0x0000000000000013       0x19 ./Startup/startup_stm32f401retx.o
 
-.debug_macro    0x0000000000000000      0xf80
- .debug_macro   0x0000000000000000       0x85 ./Src/main.o
- .debug_macro   0x0000000000000085      0xaae ./Src/main.o
- .debug_macro   0x0000000000000b33       0x22 ./Src/main.o
- .debug_macro   0x0000000000000b55       0x8e ./Src/main.o
- .debug_macro   0x0000000000000be3       0x51 ./Src/main.o
- .debug_macro   0x0000000000000c34      0x103 ./Src/main.o
- .debug_macro   0x0000000000000d37       0x6a ./Src/main.o
- .debug_macro   0x0000000000000da1      0x1df ./Src/main.o
+.debug_macro    0x0000000000000000      0xf76
+ .debug_macro   0x0000000000000000       0x7b ./Src/main.o
+ .debug_macro   0x000000000000007b      0xaae ./Src/main.o
+ .debug_macro   0x0000000000000b29       0x22 ./Src/main.o
+ .debug_macro   0x0000000000000b4b       0x8e ./Src/main.o
+ .debug_macro   0x0000000000000bd9       0x51 ./Src/main.o
+ .debug_macro   0x0000000000000c2a      0x103 ./Src/main.o
+ .debug_macro   0x0000000000000d2d       0x6a ./Src/main.o
+ .debug_macro   0x0000000000000d97      0x1df ./Src/main.o
 
-.debug_line     0x0000000000000000      0x40b
- .debug_line    0x0000000000000000      0x390 ./Src/main.o
- .debug_line    0x0000000000000390       0x7b ./Startup/startup_stm32f401retx.o
+.debug_line     0x0000000000000000      0x3cd
+ .debug_line    0x0000000000000000      0x352 ./Src/main.o
+ .debug_line    0x0000000000000352       0x7b ./Startup/startup_stm32f401retx.o
 
-.debug_str      0x0000000000000000     0x3c38
- .debug_str     0x0000000000000000     0x3c09 ./Src/main.o
-                                       0x3d64 (size before relaxing)
- .debug_str     0x0000000000003c09       0x2f ./Startup/startup_stm32f401retx.o
+.debug_str      0x0000000000000000     0x3c24
+ .debug_str     0x0000000000000000     0x3bf5 ./Src/main.o
+                                       0x3d50 (size before relaxing)
+ .debug_str     0x0000000000003bf5       0x2f ./Startup/startup_stm32f401retx.o
                                          0x56 (size before relaxing)
 
 .debug_frame    0x0000000000000000       0x54
