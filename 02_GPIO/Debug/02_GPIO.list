@@ -37,15 +37,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  16 .debug_rnglists 0000002c  00000000  00000000  00010458  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_macro  00000f76  00000000  00000000  00010484  2**0
+ 17 .debug_macro  00001173  00000000  00000000  00010484  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   000003cd  00000000  00000000  000113fa  2**0
+ 18 .debug_line   00000413  00000000  00000000  000115f7  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    00003c24  00000000  00000000  000117c7  2**0
+ 19 .debug_str    00004713  00000000  00000000  00011a0a  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .debug_frame  00000054  00000000  00000000  000153ec  2**2
+ 20 .debug_frame  00000054  00000000  00000000  00016120  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 0000004a  00000000  00000000  00015440  2**0
+ 21 .debug_line_str 0000004a  00000000  00000000  00016174  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -79,9 +79,9 @@ Disassembly of section .text:
  80001d0:	08000278 	.word	0x08000278
 
 080001d4 <main>:
-#define RCC_CFGR_REG_ADDR		(RCC_BASE_ADDR + RCC_CFGR_REG_OFFSET)
-
-#define GPIOA_BASE_ADDR            0x40020000UL
+#include <stdint.h>
+#include "stm32f401xx.h"
+#include "gpio.h"
 
 int main(void)
 {
