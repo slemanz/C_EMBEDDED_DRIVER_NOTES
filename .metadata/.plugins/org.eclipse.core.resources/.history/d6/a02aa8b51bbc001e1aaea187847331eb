@@ -1,5 +1,4 @@
 #include "stm32f401xx.h"
-#include "gpio.h"
 
 /*
  *  Peripheral clock setup
@@ -61,23 +60,7 @@ void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi)
  */
 void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 {
-	uint32_t temp = 0; // temporary register
 
-	// 1. configure the mode of the gpio pin
-	
-	if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode <= GPIO_MODE_ANALOG)
-	{
-		temp = (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode << (2 *pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber));
-
-
-
-
-	}else
-	{
-		//interrupt mode
-	}
-
-	// 2.
 }
 
 
@@ -95,7 +78,6 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
  */
 void GPIO_DeInit(GPIO_RegDef_t *pGPIOx)
 {
-
 
 }
 
