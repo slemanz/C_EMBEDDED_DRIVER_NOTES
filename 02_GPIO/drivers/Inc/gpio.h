@@ -60,7 +60,7 @@ typedef struct
 
 #define GPIO_MODE_IN 		0
 #define GPIO_MODE_OUT 		1
-#define GPIO_MODE ALTFN 	2
+#define GPIO_MODE_ALTFN 	2
 #define GPIO_MODE_ANALOG	3
 #define GPIO_MODE_IT_FT		4 // input type falling
 #define GPIO_MODE_IT_RT		5 // input type rising
