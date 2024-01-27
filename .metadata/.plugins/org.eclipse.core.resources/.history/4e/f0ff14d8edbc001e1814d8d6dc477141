@@ -129,7 +129,7 @@ typedef struct
 #define GPIOE			((GPIO_RegDef_t*)GPIOE_BASEADDR)
 #define GPIOH			((GPIO_RegDef_t*)GPIOH_BASEADDR)
 
-#define RCC				((RCC_RegDef_t*)RCC_BASEADDR)
+#define RCC				((GPIO_RegDef_t*)RCC_BASEADDR)
 
 
 /*
