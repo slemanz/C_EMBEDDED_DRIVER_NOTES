@@ -1,5 +1,0 @@
-#include "stm32f401xx.h"
-
-/*
- * This is a handle structure for a GPIO pin
- */

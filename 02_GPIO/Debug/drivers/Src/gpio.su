@@ -1,3 +1,4 @@
 ../drivers/Src/gpio.c:24:6:GPIO_PeriClockControl	16	static
-../drivers/Src/gpio.c:63:6:GPIO_Init	32	static
-../drivers/Src/gpio.c:127:6:GPIO_DeInit	16	static
+../drivers/Src/gpio.c:58:6:GPIO_Init	32	static
+../drivers/Src/gpio.c:124:6:GPIO_DeInit	16	static
+../drivers/Src/gpio.c:150:10:GPIO_ReadFromInputPin	24	static
