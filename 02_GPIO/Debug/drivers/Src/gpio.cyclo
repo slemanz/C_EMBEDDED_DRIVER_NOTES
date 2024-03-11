@@ -3,3 +3,6 @@
 ../drivers/Src/gpio.c:124:6:GPIO_DeInit	7
 ../drivers/Src/gpio.c:150:10:GPIO_ReadFromInputPin	1
 ../drivers/Src/gpio.c:173:10:GPIO_ReadFromInputPort	1
+../drivers/Src/gpio.c:196:6:GPIO_WriteToOutputPin	2
+../drivers/Src/gpio.c:226:6:GPIO_WriteToOutputPort	1
+../drivers/Src/gpio.c:247:6:GPIO_ToggleOutputPin	1
