@@ -1,2 +1,6 @@
 # C EMBEDDED DRIVER NOTES
 
+## DRIVERS
+
+- [2 - GPIO](02_GPIO/)
+
