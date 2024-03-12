@@ -1,3 +1,4 @@
+"./Src/01led_toggle.o"
 "./Src/main.o"
 "./Src/syscalls.o"
 "./Src/sysmem.o"

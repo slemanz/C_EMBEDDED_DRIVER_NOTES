@@ -91,14 +91,17 @@ typedef struct
 
 typedef struct
 {
-	__vo uint32_t CR;
-	__vo uint32_t PLLCFGR;
-	__vo uint32_t CFGR;
-	__vo uint32_t CIR;
-	__vo uint32_t AHB1RSTR;
-	__vo uint32_t AHB2RSTR;
+	__vo uint32_t CR; 			// 0x00
+	__vo uint32_t PLLCFGR;		// 0x04
+	__vo uint32_t CFGR;			//0x08
+	__vo uint32_t CIR;			// 0x0C
+	__vo uint32_t AHB1RSTR;		// 0x10
+	__vo uint32_t AHB2RSTR;		// 0x14
+	__vo uint32_t reserved[2];
+	__vo uint32_t APB1RSTR;
+	__vo uint32_t APB2RSTR;
 	__vo uint32_t reserved1[2];
-	__vo uint32_t AHB1ENR;
+	__vo uint32_t AHB1ENR;		//
 	__vo uint32_t AHB2ENR;
 	__vo uint32_t reserved2[2];
 	__vo uint32_t APB1ENR;
@@ -256,9 +259,11 @@ typedef struct
 
 
 
+/*
+ * Drivers includes
+ */
 
-
-
+#include "gpio.h"
 
 
 #endif /* INC_STM32F401XX_H_ */
