@@ -37,15 +37,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  16 .debug_rnglists 00000072  00000000  00000000  00011090  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_macro  00000846  00000000  00000000  00011102  2**0
+ 17 .debug_macro  000012f4  00000000  00000000  00011102  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   00000aaf  00000000  00000000  00011948  2**0
+ 18 .debug_line   00000ab7  00000000  00000000  000123f6  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    00004dea  00000000  00000000  000123f7  2**0
+ 19 .debug_str    00004df2  00000000  00000000  00012ead  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .debug_frame  000001d4  00000000  00000000  000171e4  2**2
+ 20 .debug_frame  000001d4  00000000  00000000  00017ca0  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 0000004a  00000000  00000000  000173b8  2**0
+ 21 .debug_line_str 0000004a  00000000  00000000  00017e74  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -86,7 +86,7 @@ void delay(void)
  80001d4:	b480      	push	{r7}
  80001d6:	b083      	sub	sp, #12
  80001d8:	af00      	add	r7, sp, #0
-	for(uint32_t i = 0; i < 1000000; i++);
+	for(uint32_t i = 0; i < 1500000; i++);
  80001da:	2300      	movs	r3, #0
  80001dc:	607b      	str	r3, [r7, #4]
  80001de:	e002      	b.n	80001e6 <delay+0x12>
@@ -104,7 +104,7 @@ void delay(void)
  80001f4:	46bd      	mov	sp, r7
  80001f6:	f85d 7b04 	ldr.w	r7, [sp], #4
  80001fa:	4770      	bx	lr
- 80001fc:	000f423f 	.word	0x000f423f
+ 80001fc:	0016e35f 	.word	0x0016e35f
 
 08000200 <main>:
 
@@ -135,9 +135,6 @@ int main(void)
  800021c:	72fb      	strb	r3, [r7, #11]
 
 
-	//uint32_t *RCC_AHB1ENR = (uint32_t *)(0x40023800 + 0x30); // have to typecast that is a pointer
-		//*RCC_AHB1ENR = 0x04; // 0x04 == 0b0100
-	//*RCC_AHB1ENR = *RCC_AHB1ENR  | (1 << 2);
 	GPIO_PeriClockControl(GPIOC, ENABLE);
  800021e:	2101      	movs	r1, #1
  8000220:	4806      	ldr	r0, [pc, #24]	; (800023c <main+0x3c>)
@@ -149,7 +146,6 @@ int main(void)
 
 	while(1)
 	{
-		//GPIO_WriteToOutputPin(GPIOC, GPIO_PIN_NO_10, 1);
 		GPIO_ToggleOutputPin(GPIOC, GPIO_PIN_NO_10);
  800022e:	210a      	movs	r1, #10
  8000230:	4802      	ldr	r0, [pc, #8]	; (800023c <main+0x3c>)
