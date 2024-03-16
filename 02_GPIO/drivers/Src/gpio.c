@@ -46,9 +46,9 @@ void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi)
 /**************************************************************************
  * @fn				- GPIO_Init
  *
- * @brief			-
+ * @brief			- this function config the given GPIO pin handle
  *
- * @param[in]		-
+ * @param[in]		- GPIO handle struct
  *
  * @return			- none
  *
@@ -127,9 +127,9 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 /**************************************************************************
  * @fn				- GPIO_DeInit
  *
- * @brief			-
+ * @brief			- de init a port of GPIO
  *
- * @param[in]		-
+ * @param[in]		- base address of gpio peripheral
  *
  * @return			- none
  *
