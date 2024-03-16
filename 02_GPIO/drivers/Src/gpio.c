@@ -68,7 +68,23 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 		pGPIOHandle->pGPIOx->MODER |= temp; // setting
 	}else
 	{
-		//interrupt mode
+		//1. configure interrupt mode
+		if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_FT)
+		{
+			// configure the FTSR
+
+		}else if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_RT)
+			// configure the RTSR
+		{
+
+		}else if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_RT)
+		{
+			// configure both (FTSR and RTSR
+		}
+
+		// 2. configure the GPIO port selection in SYSCFG_EXTICR
+
+		// 3. enable the exti interrupt delivery using IMR
 	}
 
 	temp = 0;
