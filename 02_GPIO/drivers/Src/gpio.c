@@ -72,14 +72,21 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 		if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_FT)
 		{
 			// configure the FTSR
+			EXTI->FTSR |= (1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
 
-		}else if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_RT)
+			// good practice: clear corresponding RTSR bit
+			EXTI->RTSR &= ~(1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+		}else if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_RT){
 			// configure the RTSR
-		{
+			EXTI->RTSR |= (1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+
+			// good practice: clear corresponding FTSR bit
+			EXTI->FTSR &= ~(1 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+
 
 		}else if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_IT_RT)
 		{
-			// configure both (FTSR and RTSR
+			// configure both (FTSR and RTSR)
 		}
 
 		// 2. configure the GPIO port selection in SYSCFG_EXTICR

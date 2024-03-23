@@ -121,6 +121,16 @@ typedef struct
 	__vo uint32_t DCKCFGR;
 }RCC_RegDef_t;
 
+typedef struct{
+	uint32_t IMR;
+	uint32_t EMR;
+	uint32_t RTSR;
+	uint32_t FTSR;
+	uint32_t SWIER;
+	uint32_t PR;
+}EXTI_RegDef_t;
+
+
 /*
  * 	peripheral definitions (Peripheral base address typecasted to xxx_RegDef_t)
  */
@@ -133,6 +143,8 @@ typedef struct
 #define GPIOH			((GPIO_RegDef_t*)GPIOH_BASEADDR)
 
 #define RCC				((RCC_RegDef_t*)RCC_BASEADDR)
+
+#define EXTI			((EXTI_RegDef_t*)EXTI_BASEADDR)
 
 
 /*
