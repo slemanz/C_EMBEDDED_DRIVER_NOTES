@@ -122,6 +122,17 @@ typedef struct
 }RCC_RegDef_t;
 
 typedef struct{
+	uint32_t MEMRMP;
+	uint32_t PMC;
+	uint32_t EXTICR1;
+	uint32_t EXTICR2;
+	uint32_t EXTICR3;
+	uint32_t EXTICR4;
+	uint32_t reserved[2];
+	uint32_t CMPCR;
+}SYSCFG_RegDef_t;
+
+typedef struct{
 	uint32_t IMR;
 	uint32_t EMR;
 	uint32_t RTSR;
