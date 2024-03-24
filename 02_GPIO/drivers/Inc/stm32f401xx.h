@@ -122,23 +122,20 @@ typedef struct
 }RCC_RegDef_t;
 
 typedef struct{
-	uint32_t MEMRMP;
-	uint32_t PMC;
-	uint32_t EXTICR1;
-	uint32_t EXTICR2;
-	uint32_t EXTICR3;
-	uint32_t EXTICR4;
-	uint32_t reserved[2];
-	uint32_t CMPCR;
+	__vo uint32_t MEMRMP;
+	__vo uint32_t PMC;
+	__vo uint32_t EXTICR[4];
+	__vo uint32_t reserved[2];
+	__vo uint32_t CMPCR;
 }SYSCFG_RegDef_t;
 
 typedef struct{
-	uint32_t IMR;
-	uint32_t EMR;
-	uint32_t RTSR;
-	uint32_t FTSR;
-	uint32_t SWIER;
-	uint32_t PR;
+	__vo uint32_t IMR;
+	__vo uint32_t EMR;
+	__vo uint32_t RTSR;
+	__vo uint32_t FTSR;
+	__vo uint32_t SWIER;
+	__vo uint32_t PR;
 }EXTI_RegDef_t;
 
 
@@ -154,6 +151,8 @@ typedef struct{
 #define GPIOH			((GPIO_RegDef_t*)GPIOH_BASEADDR)
 
 #define RCC				((RCC_RegDef_t*)RCC_BASEADDR)
+
+#define SYSCFG			((SYSCFG_RegDef_t*)SYSCFG_BASEADDR	)
 
 #define EXTI			((EXTI_RegDef_t*)EXTI_BASEADDR)
 
@@ -260,6 +259,19 @@ typedef struct{
 #define GPIOD_REG_RESET()		do{RCC->AHB1RSTR |= (1 << 3); RCC->AHB1RSTR &= ~(1 << 3);}while(0)
 #define GPIOE_REG_RESET()		do{RCC->AHB1RSTR |= (1 << 4); RCC->AHB1RSTR &= ~(1 << 4);}while(0)
 #define GPIOH_REG_RESET()		do{RCC->AHB1RSTR |= (1 << 7); RCC->AHB1RSTR &= ~(1 << 7);}while(0)
+
+
+/*
+ *  Macro to give the code of a port
+ */
+
+#define GPIO_BASEADDR_TO_CODE(x)	  ( (x == GPIOA) ? 0 :\
+										(x == GPIOB) ? 1 :\
+										(x == GPIOC) ? 2 :\
+										(x == GPIOD) ? 3 :\
+										(x == GPIOE) ? 4 :\
+										(x == GPIOH) ? 7 : 0 )
+
 
 
 /*
