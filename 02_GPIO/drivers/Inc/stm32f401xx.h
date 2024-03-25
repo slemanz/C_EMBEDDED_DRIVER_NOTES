@@ -22,6 +22,15 @@
 #define NVIC_ISER3 						((__vo uint32_t*)0xE000E10CUL)
 
 /*
+ * 	ARM-Cortex Mx Processor NVIC ISERx register addresses
+ */
+
+#define NVIC_ICER0 						((__vo uint32_t*)0xE000E180UL)
+#define NVIC_ICER1 						((__vo uint32_t*)0xE000E184UL)
+#define NVIC_ICER2 						((__vo uint32_t*)0xE000E188UL)
+#define NVIC_ICER3 						((__vo uint32_t*)0xE000E18CUL)
+
+/*
  * base addresses of Flash and SRAM memories
  */
 

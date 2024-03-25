@@ -6,3 +6,4 @@
 ../drivers/Src/gpio.c:229:6:GPIO_WriteToOutputPin	16	static
 ../drivers/Src/gpio.c:259:6:GPIO_WriteToOutputPort	16	static
 ../drivers/Src/gpio.c:280:6:GPIO_ToggleOutputPin	16	static
+../drivers/Src/gpio.c:288:6:GPIO_IRQConfig	16	static
