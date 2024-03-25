@@ -282,7 +282,39 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber)
 	pGPIOx->ODR ^= (1 << PinNumber);
 }
 
+/*
+ * IRQ configuration
+ */
+void GPIO_IRQConfig(uint8_t IRQNumber, uint8_t IRQPriority, uint8_t EnorDi)
+{
+	// reference: CORTEX M4 user guide
+	if(EnorDi == ENABLE)
+	{
+		if(IRQNumber <= 31)
+		{
+			// program ISER0 register
+			*NVIC_ISER0 |= (1 << IRQNumber);
+		}else if(IRQNumber > 31 && IRQNumber < 64) // 32 to 63
+		{
+			// program ISER1 register
+		}else if(IRQNumber >= 64 && IRQNumber < 96) // 64 to 95
+		{
+			// program ISER2 register
+		}
+	}else
+	{
+		if(IRQNumber <= 31)
+		{
 
+		}else if(IRQNumber > 31 && IRQNumber < 64)
+		{
+
+		}else if(IRQNumber >= 64 && IRQNumber < 96)d
+		{
+
+		}
+	}
+}
 
 
 

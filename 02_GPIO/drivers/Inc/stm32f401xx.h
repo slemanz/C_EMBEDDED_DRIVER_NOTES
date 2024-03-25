@@ -11,6 +11,16 @@
 #include <stdint.h>
 #define __vo volatile
 
+/*******************START: Processor Specific Details *************************/
+/*
+ * 	ARM-Cortex Mx Processor NVIC ISERx register addresses
+ */
+
+#define NVIC_ISER0 						((__vo uint32_t*)0xE000E100UL)
+#define NVIC_ISER1 						((__vo uint32_t*)0xE000E104UL)
+#define NVIC_ISER2 						((__vo uint32_t*)0xE000E108UL)
+#define NVIC_ISER3 						((__vo uint32_t*)0xE000E10CUL)
+
 /*
  * base addresses of Flash and SRAM memories
  */
@@ -286,12 +296,18 @@ typedef struct{
 #define GPIO_PIN_RESET				RESET
 
 
+/*
+ * IRQ numbers macros - the positions
+ * IRQ (Interrupt Request)
+ */
 
-
-
-
-
-
+#define IRQ_NO_EXTI0 		6
+#define IRQ_NO_EXTI1 		7
+#define IRQ_NO_EXTI3 		8
+#define IRQ_NO_EXTI4 		9
+#define IRQ_NO_EXTI5 		10
+#define IRQ_NO_EXTI9_5 		23
+#define IRQ_NO_EXTI15_10 	40
 
 
 /*
