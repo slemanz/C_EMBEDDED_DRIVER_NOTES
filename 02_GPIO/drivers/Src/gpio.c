@@ -282,9 +282,21 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber)
 	pGPIOx->ODR ^= (1 << PinNumber);
 }
 
-/*
- * IRQ configuration
+
+/**************************************************************************
+ * @fn				- GPIO_IRQITConfig
+ *
+ * @brief			-
+ *
+ * @param[in]		-
+ *
+ * @return			- none
+ *
+ * @Note			- none
+ *
  */
+
+
 void GPIO_IRQITConfig(uint8_t IRQNumber, uint8_t EnorDi)
 {
 	// reference: CORTEX M4 user guide
@@ -324,6 +336,20 @@ void GPIO_IRQITConfig(uint8_t IRQNumber, uint8_t EnorDi)
 	}
 }
 
+
+/**************************************************************************
+ * @fn				- GPIO_IRQPriorityConfig
+ *
+ * @brief			-
+ *
+ * @param[in]		-
+ *
+ * @return			- none
+ *
+ * @Note			- none
+ *
+ */
+
 void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority)
 {
 	// 1. find out the ipr register
@@ -334,6 +360,29 @@ void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority)
 	uint8_t shift_amount = (8 * iprx_section) + (8 - NO_PR_BITS_IMPLEMENTED);
 	*(NVIC_PR_BASE_ADDR + (iprx * 4)) |= (IRQPriority << shift_amount);
 
+}
+
+/**************************************************************************
+ * @fn				- GPIO_IRQHandling
+ *
+ * @brief			-
+ *
+ * @param[in]		-
+ *
+ * @return			- none
+ *
+ * @Note			- none
+ *
+ */
+
+void GPIO_IRQHandling(uint8_t PinNumber)
+{
+	// clear the exti pr register corresponding to the pin number
+	if(EXTI->PR & (1 << PinNumber))
+	{
+		// clear
+		EXTI->PR |= (1 << PinNumber);
+	}
 }
 
 
