@@ -1,28 +1,40 @@
+#include <string.h>
 #include "stm32f401xx.h"
 
-/// when a external button is pressed, turn on a led
-
-#define BTN_PRESSED 0
 
 void delay(void)
 {
 	for(uint32_t i = 0; i < 5000000; i++);
 }
 
+void debounce(void)
+{
+	for(uint32_t i = 0; i < 500000; i++);
+}
+
 int main(void)
 {
-	GPIO_Handle_t GpioLed;
+	GPIO_Handle_t GpioLed1, GpioLed2, GpioButton;
 
-	GpioLed.pGPIOx = GPIOC;
-	GpioLed.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_11;
-	GpioLed.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUT;
-	GpioLed.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_LOW;
-	GpioLed.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
-	GpioLed.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
+	memset(&GpioLed1, 0, sizeof(GpioLed1)); // set each member element to 0
+	memset(&GpioLed2, 0, sizeof(GpioLed2));
+	memset(&GpioButton, 0, sizeof(GpioButton));
 
 
+	GpioLed1.pGPIOx = GPIOC;
+	GpioLed1.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_11;
+	GpioLed1.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUT;
+	GpioLed1.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_LOW;
+	GpioLed1.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
+	GpioLed1.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
 
-	GPIO_Handle_t GpioButton;
+	GpioLed2.pGPIOx = GPIOC;
+	GpioLed2.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12;
+	GpioLed2.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUT;
+	GpioLed2.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_LOW;
+	GpioLed2.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
+	GpioLed2.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
+
 
 	GpioButton.pGPIOx = GPIOC;
 	GpioButton.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_10;
@@ -35,27 +47,26 @@ int main(void)
 
 
 	GPIO_PeriClockControl(GPIOC, ENABLE);
-	GPIO_Init(&GpioLed);
+	GPIO_Init(&GpioLed1);
+	GPIO_Init(&GpioLed2);
 	GPIO_Init(&GpioButton);
 	GPIO_WriteToOutputPin(GPIOC,GPIO_PIN_NO_11,GPIO_PIN_RESET);
 
+	// IRQ config
 	GPIO_IRQPriorityConfig(IRQ_NO_EXTI15_10, NVIC_IRQ_PRI15);
 	GPIO_IRQITConfig(IRQ_NO_EXTI15_10, ENABLE);
 
 	while(1)
 	{
-
-
-		delay(); // debouncing
-
-
+		GPIO_ToggleOutputPin(GPIOC, GPIO_PIN_NO_12);
+		delay();
 	}
 }
 
 void EXTI15_10_IRQHandler(void)
 {
+	debounce(); // before clear trigger
 	GPIO_IRQHandling(GPIO_PIN_NO_10);
 	GPIO_ToggleOutputPin(GPIOC, GPIO_PIN_NO_11);
-
 }
 
