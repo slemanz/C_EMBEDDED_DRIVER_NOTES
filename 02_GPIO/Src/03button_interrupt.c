@@ -16,7 +16,7 @@ int main(void)
 	GpioLed.pGPIOx = GPIOC;
 	GpioLed.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_11;
 	GpioLed.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUT;
-	GpioLed.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
+	GpioLed.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_LOW;
 	GpioLed.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
 	GpioLed.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
 
@@ -26,7 +26,7 @@ int main(void)
 
 	GpioButton.pGPIOx = GPIOC;
 	GpioButton.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_10;
-	GpioButton.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_IN;
+	GpioButton.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_IT_FT;
 	GpioButton.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
 	GpioButton.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
 	GpioButton.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;
@@ -37,6 +37,7 @@ int main(void)
 	GPIO_PeriClockControl(GPIOC, ENABLE);
 	GPIO_Init(&GpioLed);
 	GPIO_Init(&GpioButton);
+	GPIO_WriteToOutputPin(GPIOC,GPIO_PIN_NO_11,GPIO_PIN_RESET);
 
 	GPIO_IRQPriorityConfig(IRQ_NO_EXTI15_10, NVIC_IRQ_PRI15);
 	GPIO_IRQITConfig(IRQ_NO_EXTI15_10, ENABLE);
@@ -44,10 +45,17 @@ int main(void)
 	while(1)
 	{
 
-	GPIO_ToggleOutputPin(GPIOC, GPIO_PIN_NO_11);
-	delay(); // debouncing
+
+		delay(); // debouncing
 
 
 	}
+}
+
+void EXTI15_10_IRQHandler(void)
+{
+	GPIO_IRQHandling(GPIO_PIN_NO_10);
+	GPIO_ToggleOutputPin(GPIOC, GPIO_PIN_NO_11);
+
 }
 
