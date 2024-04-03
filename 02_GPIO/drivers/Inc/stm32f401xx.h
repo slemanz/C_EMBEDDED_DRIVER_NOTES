@@ -31,6 +31,16 @@
 #define NVIC_ICER3 						((__vo uint32_t*)0xE000E18CUL)
 
 /*
+ * ARm Cortex Mx Processor Priority Regesiter Address Calculation
+ */
+
+#define NVIC_PR_BASE_ADDR	((__vo uint32_t*)0xE000E400UL)
+
+#define NO_PR_BITS_IMPLEMENTED 		4
+
+
+
+/*
  * base addresses of Flash and SRAM memories
  */
 
