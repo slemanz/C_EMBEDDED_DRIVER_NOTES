@@ -343,4 +343,7 @@ typedef struct{
 #include "gpio.h"
 
 
+#include "pinout.h"
+
+
 #endif /* INC_STM32F401XX_H_ */
