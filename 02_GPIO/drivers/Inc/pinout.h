@@ -6,7 +6,7 @@
 /*
  *  PIN DEFINITIONS
  *
- *	PB2 -> LED1 (EXAMPLE)
+ *	PC10 -> LED1 (EXAMPLE)
  */
 
 
@@ -37,15 +37,16 @@ typedef struct{
  * Ports definitions
  */
 
-#define PORT_LED1	GPIOA
-
+#define PORT_LED1	GPIOC
+#define PORT_LED2	GPIOC
 
 
 /*
  * Pins definitions
  */
 
-#define PIN_LED1	GPIO_PIN_NO_2
+#define PIN_LED1	GPIO_PIN_NO_11
+#define PIN_LED2	GPIO_PIN_NO_12
 
 
 
@@ -66,8 +67,17 @@ typedef struct{
  *  Pins abstraction
  */
 
-#define LED1 (PORTC_OUT->pin12)
+#define LED1 (PORTC_OUT->pin11)
+#define LED2 (PORTC_OUT->pin12)
 
+
+
+
+/*
+ *  FUNCTION
+ */
+
+void pinout_init(void);
 
 
 #endif /* INC_PINOUT_H_ */
