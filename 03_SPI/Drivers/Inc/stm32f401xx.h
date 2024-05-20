@@ -170,6 +170,7 @@ typedef struct{
 	__vo uint32_t DR;
 	__vo uint32_t CRCPR;
 	__vo uint32_t RXCRCR;
+	__vo uint32_t TXCRCR;
 	__vo uint32_t I2SCFGR;
 	__vo uint32_t I2SPR;
 }SPI_RegDef_t;
@@ -187,10 +188,13 @@ typedef struct{
 #define GPIOH			((GPIO_RegDef_t*)GPIOH_BASEADDR)
 
 #define RCC				((RCC_RegDef_t*)RCC_BASEADDR)
-
 #define SYSCFG			((SYSCFG_RegDef_t*)SYSCFG_BASEADDR	)
-
 #define EXTI			((EXTI_RegDef_t*)EXTI_BASEADDR)
+
+#define SPI1			((SPI_RegDef_t*)SPI1_BASE)
+#define SPI2			((SPI_RegDef_t*)SPI2_BASE)
+#define SPI3			((SPI_RegDef_t*)SPI3_BASE)
+#define SPI4			((SPI_RegDef_t*)SPI4_BASE)
 
 
 /*
@@ -348,6 +352,7 @@ typedef struct{
  */
 
 #include "gpio.h"
+#include "spi.h"
 
 
 #include "pinout.h"
