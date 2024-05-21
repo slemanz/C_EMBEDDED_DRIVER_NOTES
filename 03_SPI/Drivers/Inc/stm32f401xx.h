@@ -191,10 +191,10 @@ typedef struct{
 #define SYSCFG			((SYSCFG_RegDef_t*)SYSCFG_BASEADDR	)
 #define EXTI			((EXTI_RegDef_t*)EXTI_BASEADDR)
 
-#define SPI1			((SPI_RegDef_t*)SPI1_BASE)
-#define SPI2			((SPI_RegDef_t*)SPI2_BASE)
-#define SPI3			((SPI_RegDef_t*)SPI3_BASE)
-#define SPI4			((SPI_RegDef_t*)SPI4_BASE)
+#define SPI1			((SPI_RegDef_t*)SPI1_BASEADDR)
+#define SPI2			((SPI_RegDef_t*)SPI2_BASEADDR)
+#define SPI3			((SPI_RegDef_t*)SPI3_BASEADDR)
+#define SPI4			((SPI_RegDef_t*)SPI4_BASEADDR)
 
 
 /*

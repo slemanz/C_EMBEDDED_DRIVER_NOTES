@@ -1,6 +1,8 @@
 #ifndef INC_SPI_H_
 #define INC_SPI_H_
 
+#include "stm32f401xx.h"
+
 /*
  * 	Configuration structure for SPIx peripheral
  */
@@ -8,7 +10,7 @@
 typedef struct
 {
 	uint8_t SPI_DeviceMode;
-	uint8_t SPI_BusConfig
+	uint8_t SPI_BusConfig;
 	uint8_t SPI_SclkSpeed;
 	uint8_t SPI_DFF;
 	uint8_t SPI_CPOL;
@@ -43,7 +45,7 @@ typedef struct
  *		Peripheral Clock Setup
  */
 
-void SPI_PeriClockControl(SPI_RegDef_t *pGPIOx, uint8_t EnorDi);
+void SPI_PeriClockControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi);
 
 
 
