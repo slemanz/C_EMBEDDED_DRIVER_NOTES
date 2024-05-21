@@ -300,7 +300,14 @@ typedef struct{
 #define GPIOE_REG_RESET()		do{RCC->AHB1RSTR |= (1 << 4); RCC->AHB1RSTR &= ~(1 << 4);}while(0)
 #define GPIOH_REG_RESET()		do{RCC->AHB1RSTR |= (1 << 7); RCC->AHB1RSTR &= ~(1 << 7);}while(0)
 
+/*
+ * 	Macros to reset SPIx peripherals
+ */
 
+#define SPI1_REG_RESET()		do{RCC->APB2RSTR |= (1 << 12); RCC->APB2RSTR &= ~(1 << 12);}while(0)
+#define SPI2_REG_RESET()		do{RCC->APB1RSTR |= (1 << 14); RCC->APB1RSTR &= ~(1 << 14);}while(0)
+#define SPI3_REG_RESET()		do{RCC->APB1RSTR |= (1 << 15); RCC->APB1RSTR &= ~(1 << 15);}while(0)
+#define SPI4_REG_RESET()		do{RCC->APB2RSTR |= (1 << 13); RCC->APB2RSTR &= ~(1 << 13);}while(0)
 /*
  *  Macro to give the code of a port
  */
