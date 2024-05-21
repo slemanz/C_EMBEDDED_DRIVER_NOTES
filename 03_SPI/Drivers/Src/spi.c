@@ -60,9 +60,23 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx)
 }
 
 
+/**************************************************************************
+ * @fn				- SPI_Init
+ *
+ * @brief			-
+ *
+ * @param[in]		-
+ *
+ * @return			-
+ *
+ * @Note			-
+ *
+ */
 
+void SPI_Init(SPI_Handle_t *pSPIHandle)
+{
 
-
+}
 
 
 

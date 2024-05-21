@@ -30,6 +30,31 @@ typedef struct
 	SPI_Config_t	SPIConfig;
 }SPI_Handle_t;
 
+/*
+ *  @SPI_DeviceMode
+ */
+
+#define SPI_DEVICE_MODE_MASTER		1
+#define SPI_DEVICE_MODE_SLAVE		0
+
+
+/*
+ *  @SPI_BusConfig
+ */
+
+#define SPI_BUS_CONFIG_FD					1
+#define SPI_BUS_CONFIG_HD					2
+#define SPI_BUS_CONFIG_SIMPLEX_TXONLY		3
+#define SPI_BUS_CONFIG_SIMPLEX_RXONLY		4
+
+
+/*
+ *  @SPI_SclkSpeed
+ */
+
+
+
+
 
 
 
