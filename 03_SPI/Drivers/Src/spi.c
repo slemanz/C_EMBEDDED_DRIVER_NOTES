@@ -37,6 +37,49 @@ void SPI_PeriClockControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi)
 }
 
 
+/**************************************************************************
+ * @fn				- SPI_Init
+ *
+ * @brief			-
+ *
+ * @param[in]		-
+ *
+ * @return			-
+ *
+ * @Note			-
+ *
+ */
+
+void SPI_Init(SPI_Handle_t *pSPIHandle)
+{
+	// Configure the SPI_CR1 register
+
+	uint32_t tempreg = 0;
+
+	// 1. configure the device mode
+	tempreg |= pSPIHandle->SPIConfig.SPI_BusConfig << 2;
+
+	// 2. configure the bus config
+	if(pSPIHandle->SPIConfig == SPI_BUS_CONFIG_FD)
+	{
+		//bidi mode should be cleared
+		tempreg &= ~(1 << 15);
+	}else if(pSPIHandle->SPIConfig == SPI_BUS_CONFIG_HD)
+	{
+		//bidi mode should be set
+		tempreg |= (1 << 15);
+	}else if(pSPIHandle->SPIConfig == SPI_BUS_SIMPLEX_RXONLY)
+	{
+		// bidi mode should be cleared
+		tempreg &= ~(1 << 15);
+		// RXONLY bit should be set
+		tempreg |= (1 << 10);
+	}
+
+}
+
+
+
 
 /**************************************************************************
  * @fn				- SPI_DeInit
@@ -60,23 +103,6 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx)
 }
 
 
-/**************************************************************************
- * @fn				- SPI_Init
- *
- * @brief			-
- *
- * @param[in]		-
- *
- * @return			-
- *
- * @Note			-
- *
- */
-
-void SPI_Init(SPI_Handle_t *pSPIHandle)
-{
-
-}
 
 
 
