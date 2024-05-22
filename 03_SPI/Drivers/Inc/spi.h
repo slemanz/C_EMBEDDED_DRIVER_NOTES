@@ -52,7 +52,48 @@ typedef struct
  *  @SPI_SclkSpeed
  */
 
+#define SPI_SCLK_SPEED_DIV2				0
+#define SPI_SCLK_SPEED_DIV4				1
+#define SPI_SCLK_SPEED_DIV8				2
+#define SPI_SCLK_SPEED_DIV16			3
+#define SPI_SCLK_SPEED_DIV32			4
+#define SPI_SCLK_SPEED_DIV64			5
+#define SPI_SCLK_SPEED_DIV128			6
+#define SPI_SCLK_SPEED_DIV256			7
 
+
+/*
+ *  @SPI_DFF
+ */
+
+#define SPI_DFF_8BITS 	0
+#define SPI_DFF_16BITS 	1
+
+
+
+/*
+ *  @CPOL
+ */
+
+#define SPI_CPOL_HIGH	1
+#define SPI_CPOL_LOW	0
+
+
+
+/*
+ *  @CPHA
+ */
+
+#define SPI_CPHA_HIGH	1
+#define SPI_CPHA_LOW	0
+
+
+/*
+ *  @SPI_SSM
+ */
+
+#define SPI_SSM_HW		1
+#define SPI_SSM_SW		0
 
 
 
