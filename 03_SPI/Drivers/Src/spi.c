@@ -76,6 +76,20 @@ void SPI_Init(SPI_Handle_t *pSPIHandle)
 		tempreg |= (1 << 10);
 	}
 
+	// 3. configure the spi serial clock speed (baudrate)
+	tempreg |= pSPIHandle->SPIConfig.SPI_SclkSpeed << 3;
+
+	//4. configure the DFF
+	tempreg |= pSPIHandle->SPIConfig.SPI_DFF << 11;
+
+	//5. configure the CPOL
+	tempreg |= pSPIHandle->SPIConfig.SPI_CPOL << 1;
+
+	//6. configure the CPHA
+	tempreg |= pSPIHandle->SPIConfig.SPI_CPHA << 0;
+
+	pSPIHandle->pSPIx->CR1 = tempreg;
+
 }
 
 
