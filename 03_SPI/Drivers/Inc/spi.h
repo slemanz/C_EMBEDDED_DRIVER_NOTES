@@ -95,6 +95,12 @@ typedef struct
 #define SPI_SSM_DI		0
 
 
+/*
+ *  SPI related status flags definitions
+ */
+#define SPI_TXE_FLAG	(1 << SPI_SR_TXE)
+
+
 
 
 
@@ -126,6 +132,7 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx);
  * 	Data Send and Receive
  */
 
+uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t FlagName);
 void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t Len);
 void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t Len);
 
