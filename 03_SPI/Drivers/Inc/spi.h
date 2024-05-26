@@ -153,6 +153,7 @@ void SPI_IRQHandling(SPI_Handle_t *pHandle);
  */
 
 void SPI_PeipheralControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi);
+void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t EnorDi);
 
 
 

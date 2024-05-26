@@ -348,7 +348,7 @@ typedef struct{
 #define SPI_CR1_SPE				6
 #define SPI_CR1_LSBFIRST		7
 #define SPI_CR1_SSI				8
-#define SPI_CR1_SSIM			9
+#define SPI_CR1_SSM				9
 #define SPI_CR1_RXONLY			10
 #define SPI_CR1_DFF				11
 #define SPI_CR1_CRCNEXT			12

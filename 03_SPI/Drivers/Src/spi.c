@@ -92,6 +92,8 @@ void SPI_Init(SPI_Handle_t *pSPIHandle)
 	//6. configure the CPHA
 	tempreg |= pSPIHandle->SPIConfig.SPI_CPHA << SPI_CR1_CPHA;
 
+	tempreg |= pSPIHandle->SPIConfig.SPI_SSM << SPI_CR1_SSM;
+
 	pSPIHandle->pSPIx->CR1 = tempreg;
 
 }
@@ -195,7 +197,7 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t Len)
 
 
 /**************************************************************************
- * @fn				- PI_PeipheralControl
+ * @fn				- SPI_PeipheralControl
  *
  * @brief			-
  *
@@ -216,6 +218,33 @@ void SPI_PeipheralControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi)
 	}else
 	{
 		pSPIx->CR1 &= ~(1 << SPI_CR1_SPE);
+	}
+}
+
+
+
+
+/**************************************************************************
+ * @fn				- SPI_SSIConfig
+ *
+ * @brief			-
+ *
+ * @param[in]		-
+ *
+ * @return			-
+ *
+ * @Note			-
+ *
+ */
+
+void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t EnorDi)
+{
+	if(EnorDi == ENABLE)
+	{
+		pSPIx->CR1 |= (1 << SPI_CR1_SSI);
+	}else
+	{
+		pSPIx->CR1 &= ~(1 << SPI_CR1_SSI);
 	}
 }
 
