@@ -57,7 +57,7 @@ void SPI2_Inits(void)
 	SPI2handle.pSPIx = SPI2;
 	SPI2handle.SPIConfig.SPI_BusConfig = SPI_BUS_CONFIG_FD;
 	SPI2handle.SPIConfig.SPI_DeviceMode = SPI_DEVICE_MODE_MASTER;
-	SPI2handle.SPIConfig.SPI_SclkSpeed = SPI_SCLK_SPEED_DIV2; // 8Mhz serial clock
+	SPI2handle.SPIConfig.SPI_SclkSpeed = SPI_SCLK_SPEED_DIV8; // 2Mhz serial clock
 	SPI2handle.SPIConfig.SPI_DFF = SPI_DFF_8BITS;
 	SPI2handle.SPIConfig.SPI_CPOL = SPI_CPOL_LOW;
 	SPI2handle.SPIConfig.SPI_CPHA = SPI_CPHA_LOW;
@@ -78,6 +78,17 @@ void GPIO_Button_init(void)
 	GpioButton.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;
 
 	GPIO_Init(&GpioButton);
+
+	GPIO_Handle_t GpioLed1;
+	GpioLed1.pGPIOx = GPIOA;
+	GpioLed1.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_5;
+	GpioLed1.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUT;
+	GpioLed1.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_LOW;
+	GpioLed1.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
+	GpioLed1.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
+
+	GPIO_Init(&GpioLed1);
+	GPIO_WriteToOutputPin(GPIOA, GPIO_PIN_NO_5, GPIO_PIN_SET);
 }
 
 
@@ -105,8 +116,16 @@ int main(void)
 	while(1)
 	{
 		// wait till button is pressed
-		while(!GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13));
+		//while(!GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13));
+		if(GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13))
+		{
+			GPIO_WriteToOutputPin(GPIOA, GPIO_PIN_NO_5, GPIO_PIN_SET);
+		}else
+		{
+			GPIO_WriteToOutputPin(GPIOA, GPIO_PIN_NO_5, GPIO_PIN_RESET);
+		}
 
+		/*
 		// to avoid button bouncing
 		delay();
 		// enable the SPI2 peripheral
@@ -124,6 +143,7 @@ int main(void)
 
 		// Disable the SPI2 peripheral
 		SPI_PeipheralControl(SPI2, DISABLE);
+		*/
 
 	}
 }
