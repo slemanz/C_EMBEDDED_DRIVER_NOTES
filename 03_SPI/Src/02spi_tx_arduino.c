@@ -79,16 +79,6 @@ void GPIO_Button_init(void)
 
 	GPIO_Init(&GpioButton);
 
-	GPIO_Handle_t GpioLed1;
-	GpioLed1.pGPIOx = GPIOA;
-	GpioLed1.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_5;
-	GpioLed1.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUT;
-	GpioLed1.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_LOW;
-	GpioLed1.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
-	GpioLed1.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
-
-	GPIO_Init(&GpioLed1);
-	GPIO_WriteToOutputPin(GPIOA, GPIO_PIN_NO_5, GPIO_PIN_SET);
 }
 
 
@@ -98,7 +88,7 @@ int main(void)
 	// user button
 
 
-	char user_data[] = "Hello world";
+	char user_data[] = "Hello world Sleman";
 
 
 	// this funtciton is used to initialize the GPIO pins to behave as SPI2 pins
@@ -116,16 +106,10 @@ int main(void)
 	while(1)
 	{
 		// wait till button is pressed
-		//while(!GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13));
-		if(GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13))
-		{
-			GPIO_WriteToOutputPin(GPIOA, GPIO_PIN_NO_5, GPIO_PIN_SET);
-		}else
-		{
-			GPIO_WriteToOutputPin(GPIOA, GPIO_PIN_NO_5, GPIO_PIN_RESET);
-		}
+		while(GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13));
 
-		/*
+
+
 		// to avoid button bouncing
 		delay();
 		// enable the SPI2 peripheral
@@ -143,7 +127,7 @@ int main(void)
 
 		// Disable the SPI2 peripheral
 		SPI_PeipheralControl(SPI2, DISABLE);
-		*/
+
 
 	}
 }
