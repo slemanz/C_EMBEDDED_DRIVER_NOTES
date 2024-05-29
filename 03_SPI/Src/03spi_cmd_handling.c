@@ -16,11 +16,27 @@
  *  Alt function: 5
  */
 
-#define COMMAND_LED_CTRL          0x50
-#define COMMAND_SENSOR_READ       0x51
-#define COMMAND_LED_READ          0x52
-#define COMMAND_PRINT           0x53
-#define COMMAND_ID_READ         0x54
+
+// command codes
+#define COMMAND_LED_CTRL         	 0x50
+#define COMMAND_SENSOR_READ     	 0x51
+#define COMMAND_LED_READ         	 0x52
+#define COMMAND_PRINT          		 0x53
+#define COMMAND_ID_READ       		 0x54
+
+#define LED_ON							1
+#define LED_OFF	q						0
+
+// arduino analog pins
+#define ANALOG_PIN0						0
+#define ANALOG_PIN1						1
+#define ANALOG_PIN2						2
+#define ANALOG_PIN3						3
+#define ANALOG_PIN4						4
+
+// arduino led
+#define LED_PIN 						9
+
 
 void delay(void)
 {
@@ -87,10 +103,21 @@ void GPIO_Button_init(void)
 
 }
 
+uint8_t SPI_VerifyResponse(uint8_t ackbyte)
+{
+	if(ackbyte == 0xF5)
+	{
+		// ack
+		return 1;
+	}
+	return 0;
+}
+
 
 int main(void)
 {
 	uint8_t dummy_byte = 0xff;
+	uint8_t dummy_read;
 	uint8_t ackbyte;
 
 	// user button
@@ -126,11 +153,30 @@ int main(void)
 		// 1. CMD_LED_CTRL <pin no(1)>		<value (1)>
 
 		uint8_t commandcode = COMMAND_LED_CTRL;
+		uint8_t args[2];
+
+		// send command
 		SPI_SendData(SPI2, &commandcode, 1);
+
+		// do dummy read to clear off the RXNE
+		SPI_ReceiveData(SPI2, &dummy_read, 1);
+
+
 
 		// send some dummy bits (1byte), to fetch the response from the slave.
 		SPI_SendData(SPI2, &dummy_byte, 1 );
+
+		//read the ack byte received
 		SPI_ReceiveData(SPI2, &ackbyte, 1);
+
+		if(SPI_VerifyResponse(ackbyte))
+		{
+			// send arguments
+			args[0] = LED_PIN;
+			args[1] = LED_ON;
+			SPI_SendData(SPI2, args, 2);
+
+		}
 
 
 		// lets confirm SPI is not busy
