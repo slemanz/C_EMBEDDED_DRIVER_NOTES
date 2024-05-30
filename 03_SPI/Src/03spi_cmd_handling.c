@@ -1,11 +1,19 @@
 #include "stm32f401xx.h"
-#include "string.h"
+#include <string.h>
+#include <stdio.h>
 
 // test the SPI_sendData API, to send the string
 // "hello world"
 // SPI Master Mode
 // SCLK = 2Mhz
 // DFF = 0 and DFF = 1
+
+// semihosting
+// linker flag: -specs=rdimon.specs -lc -lrdimon
+// startup debug: monitor arm semihosting enable
+
+extern void initialise_monitor_handles(void);
+
 
 /*
  *  PINs:
@@ -116,11 +124,14 @@ uint8_t SPI_VerifyResponse(uint8_t ackbyte)
 
 int main(void)
 {
+	initialise_monitor_handles();
 
 	uint8_t dummy_write = 0xff;
 	uint8_t dummy_read;
 	uint8_t ackbyte;
 	uint8_t led_state = 0;
+
+	printf("Application is running\n");
 
 	// user button
 	GPIO_Button_init();
