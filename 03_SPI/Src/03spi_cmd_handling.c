@@ -189,14 +189,78 @@ int main(void)
 			SPI_SendData(SPI2, args, 2);
 		}
 
+		//2. CMD_SENSOR_READ	<analog pin number(1)>
+
+		// wait till button is pressed
+		while(GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13));
+		delay();
+
+		commandcode = COMMAND_SENSOR_READ;
+
+		// send command
+		SPI_SendData(SPI2, &commandcode, 1);
+
+		// do dummy read to clear off the RXNE
+		SPI_ReceiveData(SPI2, &dummy_read, 1);
+
+
+
+		// send some dummy bits (1byte), to fetch the response from the slave.
+		SPI_SendData(SPI2, &dummy_write, 1 );
+
+		//read the ack byte received
+		SPI_ReceiveData(SPI2, &ackbyte, 1);
+
+		if(SPI_VerifyResponse(ackbyte))
+		{
+			led_state = 1;
+
+			// send arguments
+			args[0] = ANALOG_PIN0;
+			SPI_SendData(SPI2, args, 1);
+
+			// do dummy read to clear off the RXNE
+			SPI_ReceiveData(SPI2, &dummy_read, 1);
+
+			// insert some delay, for the adc conversion
+			delay();
+
+
+			// send some dummy bits (1byte), to fetch the response from the slave.
+			SPI_SendData(SPI2, &dummy_write, 1 );
+
+			uint8_t analog_read;
+			SPI_ReceiveData(SPI2, &analog_read, 1);
+
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		// lets confirm SPI is not busy
 		while(SPI_GetFlagStatus(SPI2, SPI_BUSY_FLAG));
 
 		// Disable the SPI2 peripheral
 		SPI_PeipheralControl(SPI2, DISABLE);
-
-
 
 
 	}
