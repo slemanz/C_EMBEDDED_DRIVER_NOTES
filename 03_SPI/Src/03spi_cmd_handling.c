@@ -158,12 +158,14 @@ int main(void)
 
 
 
+
 		// to avoid button bouncing
 		delay();
 		// enable the SPI2 peripheral
 		SPI_PeipheralControl(SPI2, ENABLE);
 
 		// 1. CMD_LED_CTRL <pin no(1)>		<value (1)>
+		printf("First Command\n");
 
 		uint8_t commandcode = COMMAND_LED_CTRL;
 		uint8_t args[2];
@@ -200,11 +202,14 @@ int main(void)
 			SPI_SendData(SPI2, args, 2);
 		}
 
+
 		//2. CMD_SENSOR_READ	<analog pin number(1)>
+
 
 		// wait till button is pressed
 		while(GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13));
 		delay();
+		printf("Second Command\n");
 
 		commandcode = COMMAND_SENSOR_READ;
 
