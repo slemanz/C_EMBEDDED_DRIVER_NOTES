@@ -25,7 +25,7 @@
 #define COMMAND_ID_READ       		 0x54
 
 #define LED_ON							1
-#define LED_OFF	q						0
+#define LED_OFF	 						0
 
 // arduino analog pins
 #define ANALOG_PIN0						0
@@ -116,9 +116,11 @@ uint8_t SPI_VerifyResponse(uint8_t ackbyte)
 
 int main(void)
 {
-	uint8_t dummy_byte = 0xff;
+
+	uint8_t dummy_write = 0xff;
 	uint8_t dummy_read;
 	uint8_t ackbyte;
+	uint8_t led_state = 0;
 
 	// user button
 	GPIO_Button_init();
@@ -164,18 +166,27 @@ int main(void)
 
 
 		// send some dummy bits (1byte), to fetch the response from the slave.
-		SPI_SendData(SPI2, &dummy_byte, 1 );
+		SPI_SendData(SPI2, &dummy_write, 1 );
 
 		//read the ack byte received
 		SPI_ReceiveData(SPI2, &ackbyte, 1);
 
-		if(SPI_VerifyResponse(ackbyte))
+		if(SPI_VerifyResponse(ackbyte) & !led_state)
 		{
+			led_state = 1;
+
 			// send arguments
 			args[0] = LED_PIN;
 			args[1] = LED_ON;
 			SPI_SendData(SPI2, args, 2);
 
+		}else{
+			led_state = 0;
+
+			// send arguments
+			args[0] = LED_PIN;
+			args[1] = LED_OFF;
+			SPI_SendData(SPI2, args, 2);
 		}
 
 
