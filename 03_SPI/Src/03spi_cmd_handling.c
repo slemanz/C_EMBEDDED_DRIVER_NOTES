@@ -194,7 +194,7 @@ int main(void)
 			args[1] = LED_ON;
 			SPI_SendData(SPI2, args, 2);
 
-		}else{
+		}else if(SPI_VerifyResponse(ackbyte)){
 			led_state = 0;
 			printf("Led off\n");
 
@@ -385,6 +385,12 @@ int main(void)
 
 		}
 		printf("\n");
+
+
+
+
+
+
 
 
 
