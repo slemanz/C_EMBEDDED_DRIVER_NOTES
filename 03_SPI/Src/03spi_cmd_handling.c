@@ -87,7 +87,7 @@ void SPI2_Inits(void)
 	SPI2handle.pSPIx = SPI2;
 	SPI2handle.SPIConfig.SPI_BusConfig = SPI_BUS_CONFIG_FD;
 	SPI2handle.SPIConfig.SPI_DeviceMode = SPI_DEVICE_MODE_MASTER;
-	SPI2handle.SPIConfig.SPI_SclkSpeed = SPI_SCLK_SPEED_DIV8; // 2Mhz serial clock
+	SPI2handle.SPIConfig.SPI_SclkSpeed = SPI_SCLK_SPEED_DIV32; // 2Mhz serial clock
 	SPI2handle.SPIConfig.SPI_DFF = SPI_DFF_8BITS;
 	SPI2handle.SPIConfig.SPI_CPOL = SPI_CPOL_LOW;
 	SPI2handle.SPIConfig.SPI_CPHA = SPI_CPHA_LOW;
@@ -250,6 +250,7 @@ int main(void)
 			printf("Analog read: %d\n", analog_read);
 
 		}
+		printf("\n");
 
 
 		//3. COMMAND_LED_READ 	<led pin number(1)>
@@ -301,11 +302,89 @@ int main(void)
 
 
 
-		// 4. COMMAND_PRINT <>
+		// 4. CMD PRINT 	<len(2) message(len)>
+
+
+		// wait till button is pressed
+		while(GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13));
+		delay();
+		printf("Command: 4\n");
+
+		commandcode = COMMAND_PRINT;
+
+		// send command
+		SPI_SendData(SPI2, &commandcode, 1);
+
+		// do dummy read to clear off the RXNE
+		SPI_ReceiveData(SPI2, &dummy_read, 1);
 
 
 
+		// send some dummy bits (1byte), to fetch the response from the slave.
+		SPI_SendData(SPI2, &dummy_write, 1 );
 
+		//read the ack byte received
+		SPI_ReceiveData(SPI2, &ackbyte, 1);
+
+		uint8_t msg[] = "Hello! Who are you?";
+		if(SPI_VerifyResponse(ackbyte))
+		{
+			// send arguments
+			args[0] = strlen((char*)msg);
+			SPI_SendData(SPI2, args, 1);
+
+			delay();
+
+			for(uint8_t i = 0; i < args[0]; i++)
+			{
+				SPI_SendData(SPI2, &msg[i], 1);
+				SPI_ReceiveData(SPI2, &dummy_read, 1);
+			}
+			printf("COMMAND_PRINT Executed \n");
+		}
+		printf("\n");
+
+		//5. CMD_ID_READ
+
+		// wait till button is pressed
+		while(GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13));
+		delay();
+		printf("Command: 5\n");
+
+		commandcode = COMMAND_PRINT;
+
+		// send command
+		SPI_SendData(SPI2, &commandcode, 1);
+
+		// do dummy read to clear off the RXNE
+		SPI_ReceiveData(SPI2, &dummy_read, 1);
+
+
+
+		// send some dummy bits (1byte), to fetch the response from the slave.
+		SPI_SendData(SPI2, &dummy_write, 1 );
+
+		//read the ack byte received
+		SPI_ReceiveData(SPI2, &ackbyte, 1);
+
+		uint8_t id[11];
+		uint32_t i=0;
+		if( SPI_VerifyResponse(ackbyte))
+		{
+			//read 10 bytes id from the slave
+			for(  i = 0 ; i < 10 ; i++)
+			{
+				//send dummy byte to fetch data from slave
+				SPI_SendData(SPI2,&dummy_write,1);
+				SPI_ReceiveData(SPI2,&id[i],1);
+			}
+
+			id[10] = '\0';
+
+			printf("COMMAND_ID : %s \n",id);
+
+		}
+		printf("\n");
 
 
 
