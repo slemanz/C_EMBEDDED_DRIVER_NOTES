@@ -165,7 +165,7 @@ int main(void)
 		SPI_PeipheralControl(SPI2, ENABLE);
 
 		// 1. CMD_LED_CTRL <pin no(1)>		<value (1)>
-		printf("First Command\n");
+		printf("Command: 1\n");
 
 		uint8_t commandcode = COMMAND_LED_CTRL;
 		uint8_t args[2];
@@ -187,6 +187,7 @@ int main(void)
 		if(SPI_VerifyResponse(ackbyte) & !led_state)
 		{
 			led_state = 1;
+			printf("Led on\n");
 
 			// send arguments
 			args[0] = LED_PIN;
@@ -195,13 +196,14 @@ int main(void)
 
 		}else{
 			led_state = 0;
+			printf("Led off\n");
 
 			// send arguments
 			args[0] = LED_PIN;
 			args[1] = LED_OFF;
 			SPI_SendData(SPI2, args, 2);
 		}
-
+		printf("\n");
 
 		//2. CMD_SENSOR_READ	<analog pin number(1)>
 
@@ -209,7 +211,7 @@ int main(void)
 		// wait till button is pressed
 		while(GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13));
 		delay();
-		printf("Second Command\n");
+		printf("Command: 2\n");
 
 		commandcode = COMMAND_SENSOR_READ;
 
@@ -229,8 +231,6 @@ int main(void)
 
 		if(SPI_VerifyResponse(ackbyte))
 		{
-			led_state = 1;
-
 			// send arguments
 			args[0] = ANALOG_PIN0;
 			SPI_SendData(SPI2, args, 1);
@@ -247,12 +247,61 @@ int main(void)
 
 			uint8_t analog_read;
 			SPI_ReceiveData(SPI2, &analog_read, 1);
+			printf("Analog read: %d\n", analog_read);
 
 		}
 
 
+		//3. COMMAND_LED_READ 	<led pin number(1)>
 
 
+		// wait till button is pressed
+		while(GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13));
+		delay();
+		printf("Command: 3\n");
+
+		commandcode = COMMAND_LED_READ;
+
+		// send command
+		SPI_SendData(SPI2, &commandcode, 1);
+
+		// do dummy read to clear off the RXNE
+		SPI_ReceiveData(SPI2, &dummy_read, 1);
+
+
+
+		// send some dummy bits (1byte), to fetch the response from the slave.
+		SPI_SendData(SPI2, &dummy_write, 1 );
+
+		//read the ack byte received
+		SPI_ReceiveData(SPI2, &ackbyte, 1);
+
+		if(SPI_VerifyResponse(ackbyte))
+		{
+			// send arguments
+			args[0] = LED_PIN;
+			SPI_SendData(SPI2, args, 1);
+
+			// do dummy read to clear off the RXNE
+			SPI_ReceiveData(SPI2, &dummy_read, 1);
+
+			//insert some delay so that slave can ready with the data
+			delay();
+
+
+			// send some dummy bits (1byte), to fetch the response from the slave.
+			SPI_SendData(SPI2, &dummy_write, 1 );
+
+			uint8_t pin_read;
+			SPI_ReceiveData(SPI2, &pin_read, 1);
+			printf("Pin read: %d\n", pin_read);
+
+		}
+		printf("\n");
+
+
+
+		// 4. COMMAND_PRINT <>
 
 
 
