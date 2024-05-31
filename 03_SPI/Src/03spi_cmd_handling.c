@@ -165,7 +165,6 @@ int main(void)
 		SPI_PeipheralControl(SPI2, ENABLE);
 
 		// 1. CMD_LED_CTRL <pin no(1)>		<value (1)>
-		printf("Command: 1\n");
 
 		uint8_t commandcode = COMMAND_LED_CTRL;
 		uint8_t args[2];
@@ -187,7 +186,7 @@ int main(void)
 		if(SPI_VerifyResponse(ackbyte) & !led_state)
 		{
 			led_state = 1;
-			printf("Led on\n");
+			printf("CMD_LED_CTRL: On\n");
 
 			// send arguments
 			args[0] = LED_PIN;
@@ -196,14 +195,13 @@ int main(void)
 
 		}else if(SPI_VerifyResponse(ackbyte)){
 			led_state = 0;
-			printf("Led off\n");
+			printf("CMD_LED_CTRL: Off\n");
 
 			// send arguments
 			args[0] = LED_PIN;
 			args[1] = LED_OFF;
 			SPI_SendData(SPI2, args, 2);
 		}
-		printf("\n");
 
 		//2. CMD_SENSOR_READ	<analog pin number(1)>
 
@@ -211,7 +209,6 @@ int main(void)
 		// wait till button is pressed
 		while(GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13));
 		delay();
-		printf("Command: 2\n");
 
 		commandcode = COMMAND_SENSOR_READ;
 
@@ -247,10 +244,9 @@ int main(void)
 
 			uint8_t analog_read;
 			SPI_ReceiveData(SPI2, &analog_read, 1);
-			printf("Analog read: %d\n", analog_read);
+			printf("CMD_SENSOR_READ: %d\n", analog_read);
 
 		}
-		printf("\n");
 
 
 		//3. COMMAND_LED_READ 	<led pin number(1)>
@@ -259,7 +255,6 @@ int main(void)
 		// wait till button is pressed
 		while(GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13));
 		delay();
-		printf("Command: 3\n");
 
 		commandcode = COMMAND_LED_READ;
 
@@ -295,10 +290,9 @@ int main(void)
 
 			uint8_t pin_read;
 			SPI_ReceiveData(SPI2, &pin_read, 1);
-			printf("Pin read: %d\n", pin_read);
+			printf("COMMAND_LED_READ: %d\n", pin_read);
 
 		}
-		printf("\n");
 
 
 
@@ -308,7 +302,6 @@ int main(void)
 		// wait till button is pressed
 		while(GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13));
 		delay();
-		printf("Command: 4\n");
 
 		commandcode = COMMAND_PRINT;
 
@@ -340,35 +333,32 @@ int main(void)
 				SPI_SendData(SPI2, &msg[i], 1);
 				SPI_ReceiveData(SPI2, &dummy_read, 1);
 			}
-			printf("COMMAND_PRINT Executed \n");
+			printf("CMD_PRINT: Executed \n");
 		}
-		printf("\n");
 
 
 
-		/*
+
 		//5. CMD_ID_READ
+		//wait till button is pressed
+		while( GPIO_ReadFromInputPin(GPIOC,GPIO_PIN_NO_13) );
 
-		// wait till button is pressed
-		while(GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13));
+		//to avoid button de-bouncing related issues 200ms of delay
 		delay();
-		printf("Command: 5\n");
 
-		commandcode = COMMAND_PRINT;
+		commandcode = COMMAND_ID_READ;
 
-		// send command
-		SPI_SendData(SPI2, &commandcode, 1);
+		//send command
+		SPI_SendData(SPI2,&commandcode,1);
 
-		// do dummy read to clear off the RXNE
-		SPI_ReceiveData(SPI2, &dummy_read, 1);
+		//do dummy read to clear off the RXNE
+		SPI_ReceiveData(SPI2,&dummy_read,1);
 
-
-
-		// send some dummy bits (1byte), to fetch the response from the slave.
-		SPI_SendData(SPI2, &dummy_write, 1 );
+		//Send some dummy byte to fetch the response from the slave
+		SPI_SendData(SPI2,&dummy_write,1);
 
 		//read the ack byte received
-		SPI_ReceiveData(SPI2, &ackbyte, 1);
+		SPI_ReceiveData(SPI2,&ackbyte,1);
 
 		uint8_t id[11];
 		uint32_t i=0;
@@ -387,8 +377,7 @@ int main(void)
 			printf("COMMAND_ID : %s \n",id);
 
 		}
-		printf("\n");
-		*/
+
 
 
 
