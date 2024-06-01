@@ -28,6 +28,12 @@ typedef struct
 {
 	SPI_RegDef_t	*pSPIx;
 	SPI_Config_t	SPIConfig;
+	uint8_t *pTxBuffer; /* !< To store the app. Tx buffer address > */
+	uint8_t *pRxBuffer; /* !< To store the app. Rx buffer address > */
+	uint32_t TxLen; 	/* !< To store Tx len > */
+	uint32_t RxLen; 	/* !< To store Rx len > */
+	uint8_t TxState; 	/* !< To store Tx state > */
+	uint8_t RxState; 	/* !< To store Rx state > */
 }SPI_Handle_t;
 
 /*
@@ -102,6 +108,14 @@ typedef struct
 #define SPI_RXNE_FLAG 	(1 << SPI_SR_RXNE)
 #define SPI_BUSY_FLAG	(1 << SPI_SR_BSY)
 
+/*
+ * SPI Application States
+ */
+
+#define SPI_READY				0
+#define SPI_BUSY_IN_RX			1
+#define SPI_BUSY_IN_TX			2
+
 
 
 
@@ -138,8 +152,8 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx);
 void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t Len);
 void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t Len);
 
-void SPI_SendDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pTxBuffer, uint32_t Len);
-void SPI_ReceiveDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer, uint32_t Len);
+uint8_t SPI_SendDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pTxBuffer, uint32_t Len);
+uint8_t SPI_ReceiveDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer, uint32_t Len);
 
 
 
