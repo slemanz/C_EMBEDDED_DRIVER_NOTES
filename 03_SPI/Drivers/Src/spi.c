@@ -305,24 +305,6 @@ void SPI_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority)
 
 }
 
-/**************************************************************************
- * @fn				- SPI_IRQHandling
- *
- * @brief			-
- *
- * @param[in]		-
- *
- * @return			- none
- *
- * @Note			- none
- *
- */
-
-void SPI_IRQHandling(SPI_Handle_t *pHandle)
-{
-	// clear the exti pr register corresponding to the pin number
-
-}
 
 
 
@@ -344,7 +326,7 @@ uint8_t SPI_SendDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pTxBuffer, uint32_t Le
 {
 	uint8_t state = pSPIHandle->TxState;
 
-	if(state != SPI_BUSY_IN_RX)
+	if(state != SPI_BUSY_IN_TX)
 	{
 		// 1. Save the Tx buffer address and Len information in some global variables
 		pSPIHandle->pTxBuffer = pTxBuffer;
@@ -385,10 +367,76 @@ uint8_t SPI_SendDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pTxBuffer, uint32_t Le
 
 uint8_t SPI_ReceiveDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer, uint32_t Len)
 {
+	uint8_t state = pSPIHandle->RxState;
 
-	return 1;
+	if(state != SPI_BUSY_IN_RX)
+	{
+		// 1. Save the Tx buffer address and Len information in some global variables
+		pSPIHandle->pRxBuffer = pRxBuffer;
+		pSPIHandle->RxLen	= Len;
+
+
+		// 2. Mark the SPI state as busy in transmission so that
+		//    no other code can take over same SPI peripheral until transmission is over
+		pSPIHandle->RxState = SPI_BUSY_IN_RX;
+
+
+		// 3. Enable the RXNEIE control bit to get interrupt whenever TXE flag is set in SR
+		pSPIHandle->pSPIx->CR2 |= (1 << SPI_CR2_RXNEIE);
+	}
+
+	return state;
 }
 
+/**************************************************************************
+ * @fn				- SPI_IRQHandling
+ *
+ * @brief			-
+ *
+ * @param[in]		-
+ *
+ * @return			- none
+ *
+ * @Note			- none
+ *
+ */
+
+void SPI_IRQHandling(SPI_Handle_t *pHandle)
+{
+	uint8_t temp1, temp2;
+	// first lets check for TXE
+	temp1 = pHandle->pSPIx->SR & (1 << SPI_SR_TXE);
+	temp2 = pHandle->pSPIx->CR2 & (1 << SPI_CR2_TXEIE);
+
+	if(temp1 && temp2)
+	{
+		// handle TXE
+		spi_txe_interrupt_handle();
+	}
+
+
+	// lets check for RXNE
+	temp1 = pHandle->pSPIx->SR & (1 << SPI_SR_RXNE);
+	temp2 = pHandle->pSPIx->CR2 & (1 << SPI_CR2_RXNEIE);
+
+	if(temp1 && temp2)
+	{
+		// handle RXNE
+		spi_rxne_interrupt_handle();
+	}
+
+	// check for OVR flag
+	temp1 = pHandle->pSPIx->SR & (1 << SPI_SR_OVR);
+	temp2 = pHandle->pSPIx->CR2 & (1 << SPI_CR2_ERRIE);
+
+	if(temp1 && temp2)
+	{
+		spi_ovr_interrupt_handle();
+	}
+
+
+
+}
 
 
 
