@@ -565,10 +565,7 @@ static void spi_txe_interrupt_handle(SPI_Handle_t *pSPIHandle)
 		// the application that TX is over.
 
 		// this prevents interrupts from setting up of TXE flag;
-		pSPIHandle->pSPIx->CR2 &= ~(1<< SPI_CR2_TXEIE);
-		pSPIHandle->pTxBuffer = NULL;
-		pSPIHandle->TxLen = 0;
-		pSPIHandle->TxState = SPI_READY;
+		SPI_CloseTransmission(pSPIHandle);
 		SPI_ApplicationEventCallback(pSPIHandle, SPI_EVENT_TX_CMPLT);
 
 
@@ -599,20 +596,66 @@ static void spi_rxne_interrupt_handle(SPI_Handle_t *pSPIHandle)
 	{
 		//reception is complete
 		//lets turn off the rxneie interrupt
-		pSPIHandle->pSPIx->CR2 &= ~(1<<SPI_CR2_RXNEIE);
-		pSPIHandle->pRxBuffer = NULL;
-		pSPIHandle->RxLen = 0;
-		pSPIHandle->RxState = SPI_READY;
-
-
+		SPI_CloseReception(pSPIHandle);
 		SPI_ApplicationEventCallback(pSPIHandle,SPI_EVENT_RX_CMPLT);
 	}
 
 }
 
-static void spi_ovr_interrupt_handle(SPI_Handle_t *pHandle)
+static void spi_ovr_interrupt_handle(SPI_Handle_t *pSPIHandle)
 {
+	uint8_t temp;
+	// 1. clear the ovr flag
+	if(pSPIHandle->TxState != SPI_BUSY_IN_TX)
+	{
+		temp = pSPIHandle->pSPIx->DR;
+		temp = pSPIHandle->pSPIx->SR;
+
+	}
+	(void)temp; // prevent unused variable warning
+
+	// 2. inform the application
+	SPI_ApplicationEventCallback(pSPIHandle,SPI_EVENT_OVR_ERR);
 
 }
+
+void SPI_CloseTransmission(SPI_Handle_t *pSPIHandle)
+{
+	pSPIHandle->pSPIx->CR2 &= ~(1<< SPI_CR2_TXEIE);
+	pSPIHandle->pTxBuffer = NULL;
+	pSPIHandle->TxLen = 0;
+	pSPIHandle->TxState = SPI_READY;
+}
+
+
+void SPI_CloseReception(SPI_Handle_t *pSPIHandle)
+{
+	pSPIHandle->pSPIx->CR2 &= ~(1<<SPI_CR2_RXNEIE);
+	pSPIHandle->pRxBuffer = NULL;
+	pSPIHandle->RxLen = 0;
+	pSPIHandle->RxState = SPI_READY;
+}
+
+
+void SPI_ClearOVRFlag(SPI_RegDef_t *pSPIx)
+{
+	uint8_t temp;
+	temp = pSPIx->DR;
+	temp = pSPIx->SR;
+	(void)temp;
+}
+
+
+__weak void SPI_ApplicationEventCallback(SPI_Handle_t *pSPIHandle, uint8_t AppEv)
+{
+	// this is a week implementation, the application may override this function
+}
+
+
+
+
+
+
+
 
 

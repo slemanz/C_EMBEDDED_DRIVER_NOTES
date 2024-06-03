@@ -4,7 +4,9 @@
 // this header file describes the microcontroller
 #include <stdint.h>
 #include <stddef.h>
+
 #define __vo volatile
+#define __weak __attribute__((weak))
 
 /*******************START: Processor Specific Details *************************/
 /*
