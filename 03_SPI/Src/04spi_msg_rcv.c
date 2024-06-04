@@ -14,11 +14,14 @@
  */
 
 /*
- * extra pin for receiver interrupt (PA3)
+ * extra pin for receiver interrupt (PC7)
  */
 #include<stdio.h>
 #include<string.h>
 #include "stm32f401xx.h"
+
+extern void initialise_monitor_handles(void);
+
 
 SPI_Handle_t SPI2handle;
 
@@ -83,7 +86,7 @@ void SPI2_Inits(void)
 	SPI2handle.pSPIx = SPI2;
 	SPI2handle.SPIConfig.SPI_BusConfig = SPI_BUS_CONFIG_FD;
 	SPI2handle.SPIConfig.SPI_DeviceMode = SPI_DEVICE_MODE_MASTER;
-	SPI2handle.SPIConfig.SPI_SclkSpeed = SPI_SCLK_SPEED_DIV8;
+	SPI2handle.SPIConfig.SPI_SclkSpeed = SPI_SCLK_SPEED_DIV32;
 	SPI2handle.SPIConfig.SPI_DFF = SPI_DFF_8BITS;
 	SPI2handle.SPIConfig.SPI_CPOL = SPI_CPOL_LOW;
 	SPI2handle.SPIConfig.SPI_CPHA = SPI_CPHA_LOW;
@@ -100,22 +103,25 @@ void Slave_GPIO_InterruptPinInit(void)
 	memset(&spiIntPin,0,sizeof(spiIntPin));
 
 	//this is led gpio configuration
-	spiIntPin.pGPIOx = GPIOA;
-	spiIntPin.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_3;
+	spiIntPin.pGPIOx = GPIOC;
+	spiIntPin.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_7;
 	spiIntPin.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_IT_FT;
 	spiIntPin.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_LOW;
 	spiIntPin.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;
 
+		//GpioButton.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
+
 	GPIO_Init(&spiIntPin);
 
-	GPIO_IRQPriorityConfig(IRQ_NO_EXTI3 ,NVIC_IRQ_PRI15);
-	GPIO_IRQITConfig(IRQ_NO_EXTI3 ,ENABLE);
+	GPIO_IRQPriorityConfig(IRQ_NO_EXTI9_5,NVIC_IRQ_PRI15);
+	GPIO_IRQITConfig(IRQ_NO_EXTI9_5,ENABLE);
 
 }
 
 
 int main(void)
 {
+	initialise_monitor_handles();
 
 	uint8_t dummy = 0xff;
 
@@ -136,19 +142,21 @@ int main(void)
 	SPI_SSOEConfig(SPI2,ENABLE);
 
 	SPI_IRQITConfig(IRQ_NO_SPI2,ENABLE);
+	printf("Running\n");
 
 	while(1){
 
 		rcvStop = 0;
 
 		while(!dataAvailable); //wait till data available interrupt from transmitter device(slave)
+		printf("Teste 1\n");
 
-		GPIO_IRQITConfig(IRQ_NO_EXTI3 ,DISABLE);
+		GPIO_IRQITConfig(IRQ_NO_EXTI9_5,DISABLE);
 
 		//enable the SPI2 peripheral
 		SPI_PeriClockControl(SPI2,ENABLE);
 
-
+		printf("Teste 2\n"); // problem is HERE
 		while(!rcvStop)
 		{
 			/* fetch the data from the SPI peripheral byte by byte in interrupt mode */
@@ -156,7 +164,7 @@ int main(void)
 			while ( SPI_ReceiveDataIT(&SPI2handle,(uint8_t*)&ReadByte,1) == SPI_BUSY_IN_RX );
 		}
 
-
+		printf("Teste 3\n");
 		// confirm SPI is not busy
 		while( SPI_GetFlagStatus(SPI2,SPI_BUSY_FLAG) );
 
@@ -167,7 +175,7 @@ int main(void)
 
 		dataAvailable = 0;
 
-		GPIO_IRQITConfig(IRQ_NO_EXTI3 ,ENABLE);
+		GPIO_IRQITConfig(IRQ_NO_EXTI9_5,ENABLE);
 
 
 	}
@@ -204,6 +212,6 @@ void SPI_ApplicationEventCallback(SPI_Handle_t *pSPIHandle,uint8_t AppEv)
 /* Slave data available interrupt handler */
 void EXTI9_5_IRQHandler(void)
 {
-	GPIO_IRQHandling(GPIO_PIN_NO_3);
+	GPIO_IRQHandling(GPIO_PIN_NO_7);
 	dataAvailable = 1;
 }
