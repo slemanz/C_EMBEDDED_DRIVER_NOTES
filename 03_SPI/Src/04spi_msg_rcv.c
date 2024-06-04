@@ -141,7 +141,7 @@ int main(void)
 	*/
 	SPI_SSOEConfig(SPI2,ENABLE);
 
-	SPI_IRQITConfig(IRQ_NO_SPI2,ENABLE);
+	SPI_IRQInterruptConfig(IRQ_NO_SPI2,ENABLE);
 	printf("Running\n");
 
 	while(1){
