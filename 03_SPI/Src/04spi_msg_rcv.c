@@ -20,7 +20,7 @@
 #include<string.h>
 #include "stm32f401xx.h"
 
-//extern void initialise_monitor_handles(void);
+extern void initialise_monitor_handles(void);
 
 
 SPI_Handle_t SPI2handle;
@@ -121,7 +121,7 @@ void Slave_GPIO_InterruptPinInit(void)
 
 int main(void)
 {
-	//initialise_monitor_handles();
+	initialise_monitor_handles();
 
 	uint8_t dummy = 0xff;
 
@@ -142,21 +142,20 @@ int main(void)
 	SPI_SSOEConfig(SPI2,ENABLE);
 
 	SPI_IRQITConfig(IRQ_NO_SPI2,ENABLE);
-	//printf("Running\n");
+	SPI_IRQPriorityConfig(IRQ_NO_SPI2,14);
+	printf("Running\n");
 
 	while(1){
 
 		rcvStop = 0;
 
 		while(!dataAvailable); //wait till data available interrupt from transmitter device(slave)
-		//printf("Teste 1\n");
 
 		GPIO_IRQITConfig(IRQ_NO_EXTI9_5,DISABLE);
 
 		//enable the SPI2 peripheral
-		SPI_PeriClockControl(SPI2,ENABLE);
+		SPI_PeripheralControl(SPI2,ENABLE);
 
-		//printf("Teste 2\n"); // problem is HERE
 		while(!rcvStop)
 		{
 			/* fetch the data from the SPI peripheral byte by byte in interrupt mode */
@@ -164,14 +163,13 @@ int main(void)
 			while ( SPI_ReceiveDataIT(&SPI2handle,(uint8_t*)&ReadByte,1) == SPI_BUSY_IN_RX );
 		}
 
-		printf("Teste 3\n");
 		// confirm SPI is not busy
 		while( SPI_GetFlagStatus(SPI2,SPI_BUSY_FLAG) );
 
 		//Disable the SPI2 peripheral
-		SPI_PeriClockControl(SPI2,DISABLE);
+		SPI_PeripheralControl(SPI2,DISABLE);
 
-		//printf("Rcvd data = %s\n",RcvBuff);
+		printf("Rcvd data = %s\n",RcvBuff);
 
 		dataAvailable = 0;
 

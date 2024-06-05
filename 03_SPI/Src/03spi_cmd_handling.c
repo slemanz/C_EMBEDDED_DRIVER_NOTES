@@ -162,7 +162,7 @@ int main(void)
 		// to avoid button bouncing
 		delay();
 		// enable the SPI2 peripheral
-		SPI_PeipheralControl(SPI2, ENABLE);
+		SPI_PeripheralControl(SPI2, ENABLE);
 
 		// 1. CMD_LED_CTRL <pin no(1)>		<value (1)>
 
@@ -402,7 +402,7 @@ int main(void)
 		while(SPI_GetFlagStatus(SPI2, SPI_BUSY_FLAG));
 
 		// Disable the SPI2 peripheral
-		SPI_PeipheralControl(SPI2, DISABLE);
+		SPI_PeripheralControl(SPI2, DISABLE);
 
 
 	}
