@@ -1,16 +1,20 @@
-SPI DRIVER
+I2c DRIVER
 
-The SPI driver API requirements:
+The I2C driver API requirements:
 
-- SPI initialization/peripheral clock control
+- I2c initialization/peripheral clock control
 
-- SPI TX
+- I2C MASTER TX
 
-- SPI RX
+- I2C MASTER RX
 
-- SPI Interrupt config. and handling
+- I2C SLAVE TX
 
-- Other SPI management APIs
+- I2C SLAVE RX
+
+- I2C Interrupt config. and handling
+
+- I2C Error interrupt handling
 
 ## Files
 
