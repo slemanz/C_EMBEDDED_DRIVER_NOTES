@@ -60,7 +60,7 @@ typedef struct
  * Peripheral Clock Setup
  */
 
-void I2C_PeriClockControl(I2C_RegDef_t *pSPIx, uint8_t EnorDi);
+void I2C_PeriClockControl(I2C_RegDef_t *pI2Cx, uint8_t EnorDi);
 
 
 /*
@@ -68,7 +68,7 @@ void I2C_PeriClockControl(I2C_RegDef_t *pSPIx, uint8_t EnorDi);
  */
 
 void I2C_Init(I2C_Handle_t *pI2CHandle);
-void I2C_DeInit(I2C_RegDef_t);
+void I2C_DeInit(I2C_RegDef_t *pI2Cx);
 
 /*
  * Data send and receive
@@ -87,9 +87,14 @@ void I2C_IRQPriorityConfig(uint8_t *pI2Cx, uint8_t EnorDi);
  * Other peripheral control API
  */
 
+void I2C_PeripheralControl(I2C_RegDef_t *pI2Cx, uint8_t EnorDi);
+uint8_t I2C_GetFlagStatus(I2C_RegDef_t *pI2Cx, uint32_t FlagName);
 
+/*
+ * Application Callback
+ */
 
-
+void I2C_ApplicationEventCallback(I2C_Handle_t *pI2CHandle, uint8_t AppEv);
 
 
 
