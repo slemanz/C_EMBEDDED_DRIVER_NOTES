@@ -79,7 +79,7 @@ void I2C_DeInit(I2C_RegDef_t *pI2Cx);
  */
 
 void I2C_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi);
-void I2C_IRQPriorityConfig(uint8_t *pI2Cx, uint8_t EnorDi);
+void I2C_IRQPriorityConfig(uint8_t IRQNumber,uint32_t IRQPriority);
 
 
 
