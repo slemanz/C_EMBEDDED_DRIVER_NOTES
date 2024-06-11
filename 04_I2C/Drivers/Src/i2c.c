@@ -1,6 +1,7 @@
 #include "i2c.h"
 
 uint16_t AHB_PreScaler[8] = {2, 4, 8, 16, 64, 128, 256, 512};
+uint16_t APB1_PreScaler[8] = {2, 4, 8, 16};
 
 /*********************************************************************
  * @fn      		  - I2C_PeripheralControl
@@ -91,7 +92,7 @@ uint32_t RCC_GetPCLK1Value(void)
 	uint32_t pclk1, SystemClk;
 
 	uint8_t clksrc, temp;
-	uint16_t ahbp;
+	uint16_t ahbp, apb1p;
 
 	clksrc = (RCC->CFGR >> 2) & 0x3;
 
@@ -106,6 +107,8 @@ uint32_t RCC_GetPCLK1Value(void)
 		SystemClk = RCC_GetPLLOutputClock();
 	}
 
+
+	// ahb
 	temp = (RCC->CFGR >> 4) & 0xF;
 
 	if(temp < 8)
@@ -115,6 +118,20 @@ uint32_t RCC_GetPCLK1Value(void)
 	{
 		ahbp = AHB_PreScaler[temp - 8];
 	}
+
+
+	// apb1
+	temp = (RCC->CFGR >> 10) & 0xF;
+
+	if(temp < 4)
+	{
+		apb1p = 1;
+	}else
+	{
+		apb1p = APB1_PreScaler[temp - 4];
+	}
+
+	pclk1 = (SystemClk/ahbp)/apb1p;
 
 	return pclk1;
 }
@@ -140,6 +157,31 @@ void I2C_Init(I2C_Handle_t *pI2CHandle)
 	uint32_t tempreg = 0;
 
 	tempreg |= (pI2CHandle->I2C_Config.I2C_ACKControl << 10);
+	pI2CHandle->pI2C->CR1 = tempreg;
+
+	// configure the FREQ field of CR2
+	tempreg = 0;
+	tempreg = RCC_GetPCLK1Value()/1000000U;
+	pI2CHandle->pI2C->CR2 = (tempreg & 0x3F);
+
+	//program the device own address;
+	tempreg = (pI2CHandle->I2C_Config.I2C_DeviceAddress << 1);
+	tempreg |= (1 << 14); // always be 1 - reference manual
+	pI2CHandle->pI2C->OAR1 = tempreg;
+
+	//CCR calculations
+	uint16_t ccr_value = 0;
+	if(pI2CHandle->I2C_Config.I2C_SCLSpeed <= I2C_SCL_SPEED_SM)
+	{
+		// mode is standard mode
+		ccr_value = (RCC_GetPCLK1Value()/2 * pI2CHandle->I2C_Config.I2C_SCLSpeed);
+		tempreg |= ccr_value & 0xFFF;
+	}else
+	{
+		// mode is fast mode
+		tempreg |= (1 << 15);
+
+	}
 }
 
 
