@@ -180,8 +180,18 @@ void I2C_Init(I2C_Handle_t *pI2CHandle)
 	{
 		// mode is fast mode
 		tempreg |= (1 << 15);
-
+		tempreg |= (pI2CHandle->I2C_Config.I2C_FMDutyCycle <<14);
+		if(pI2CHandle->I2C_Config.I2C_FMDutyCycle == I2C_FM_DUTY_2)
+		{
+			ccr_value = (RCC_GetPCLK1Value()/ (3 * pI2CHandle->I2C_Config.I2C_SCLSpeed));
+		}else
+		{
+			ccr_value = (RCC_GetPCLK1Value()/ (25 * pI2CHandle->I2C_Config.I2C_SCLSpeed));
+		}
+		tempreg |= (ccr_value & 0xFFF);
 	}
+
+	pI2CHandle->pI2C->CCR = tempreg;
 }
 
 
