@@ -4,6 +4,32 @@ uint16_t AHB_PreScaler[8] = {2, 4, 8, 16, 64, 128, 256, 512};
 uint16_t APB1_PreScaler[8] = {2, 4, 8, 16};
 
 static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx);
+static void I2C_ExecuteAddressPhase(I2C_RegDef_t *pI2Cx, uint8_t SlaveAddr);
+static void I2C_ClearADDRFlag(I2C_RegDef_t *pI2Cx)
+
+
+
+
+
+static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx)
+{
+	pI2Cx->CR1 |= (1 << I2C_CR1_START);
+}
+
+static void I2C_ExecuteAddressPhase(I2C_RegDef_t *pI2Cx, uint8_t SlaveAddr)
+{
+	SlaveAddr = SlaveAddr << 1;
+	SlaveAddr &= ~(1); // SlaveAddr is Slave address + r/nw bit = 0
+	pI2Cx->DR = SlaveAddr;
+}
+
+static void I2C_ClearADDRFlag(I2C_RegDef_t *pI2Cx)
+{
+	uint32_t dummyRead = pI2Cx->SR1;
+	dummyRead = pI2Cx->SR2;
+	(void)dummyRead;
+
+}
 
 
 /*********************************************************************
@@ -225,6 +251,19 @@ void I2C_DeInit(I2C_RegDef_t *pI2Cx)
 
 
 
+
+
+
+uint8_t I2C_GetFlagStatus(I2C_RegDef_t *pI2Cx, uint32_t FlagName)
+{
+	if(pI2Cx->SR1 & FlagName)
+	{
+		return FLAG_SET;
+	}
+	return FLAG_RESET;
+}
+
+
 /*********************************************************************
  * @fn      		  - I2C_MasterSendData
  *
@@ -248,17 +287,25 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxbuffer, uint32_t L
 
 	// 2. confirm that start generatio  is completed by checking the SB flag in the SR1
 	// NOTE: until SB is cleared SCL will be stretched (pulled LOW)
-	while(I2C_GetFlagStatus(pI2CHandle->pI2C, I2C_FLAG_SB));
+	while(!I2C_GetFlagStatus(pI2CHandle->pI2C, I2C_FLAG_SB));
+
+	// 3. Send the address of the slave with r/nw bit set to w(0) (total 8 bits)
+	I2C_ExecuteAddressPhase(pI2CHandle->pI2C, SlaveAddr);
+
+	//4. Confirm that address phase is completed by checking the ADDR flag in the SR1
+	while(! I2C_GetFlagStatus(pI2CHandle->pI2C, I2C_FLAG_ADDR));
+
+	// 5. clear the ADDR flag according to its software sequence
+	// Note: until ADDR is cleared SCL will be stretched (pulled to LOW)
+	I2C_ClearADDRFlag(pI2CHandle->pI2C);
+
+	// 6. send the data until Len becomes 0
 
 
 
 
 }
 
-void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx)
-{
-	pI2Cx->CR1 |= (1 << I2C_CR1_START);
-}
 
 
 /*********************************************************************
