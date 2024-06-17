@@ -5,7 +5,8 @@ uint16_t APB1_PreScaler[8] = {2, 4, 8, 16};
 
 static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx);
 static void I2C_ExecuteAddressPhase(I2C_RegDef_t *pI2Cx, uint8_t SlaveAddr);
-static void I2C_ClearADDRFlag(I2C_RegDef_t *pI2Cx)
+static void I2C_ClearADDRFlag(I2C_RegDef_t *pI2Cx);
+static void I2C_GenerateStopCondition(I2C_RegDef_t *pI2Cx);
 
 
 
@@ -29,6 +30,11 @@ static void I2C_ClearADDRFlag(I2C_RegDef_t *pI2Cx)
 	dummyRead = pI2Cx->SR2;
 	(void)dummyRead;
 
+}
+
+static void I2C_GenerateStopCondition(I2C_RegDef_t *pI2Cx)
+{
+	pI2Cx->CR1 |= (1 << I2C_CR1_STOP);
 }
 
 
@@ -300,6 +306,28 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxbuffer, uint32_t L
 	I2C_ClearADDRFlag(pI2CHandle->pI2C);
 
 	// 6. send the data until Len becomes 0
+
+	while(Len > 0)
+	{
+		while(! I2C_GetFlagStatus(pI2CHandle->pI2C, I2C_FLAG_TXE)); // wait till TXE is set
+		pI2CHandle->pI2C->DR = *pTxbuffer;
+		pTxbuffer++;
+		Len--;
+	}
+
+	// 7. when Len becomes zero wait for TXE=1 and BTF=1 before senerating the stop condition
+	// Note: TXE=1, BTF=1, means that both SR and DR are empty and next transmission should begin
+	// when BTF=1 SCL will be stretched (pulled to LOW)
+
+	while(! I2C_GetFlagStatus(pI2CHandle->pI2C, I2C_FLAG_TXE));
+
+	while(! I2C_GetFlagStatus(pI2CHandle->pI2C, I2C_FLAG_BTF));
+
+
+
+	// 8. Generate STOP condition and master need not to wait for the completion of stop condition.
+	// Note: generating STOP, automatically clears the BTF
+	I2C_GenerateStopCondition(pI2CHandle->pI2C);
 
 
 
