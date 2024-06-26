@@ -29,6 +29,12 @@
 
 extern void initialise_monitor_handles(void);
 
+#define MY_ADDR 0x61
+#define SLAVE_ADDR 0x68
+
+// some data
+uint8_t some_data[] = "We are testing I2C\n";
+
 
 void delay(void)
 {
@@ -49,11 +55,11 @@ void I2C1_GPIOInits(void)
 	I2CPins.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
 
 	// SCL
-	I2CPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_6;
+	I2CPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_6;
 	GPIO_Init(&I2CPins);
 
 	// SDA
-	I2CPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_9;
+	I2CPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_6;
 	GPIO_Init(&I2CPins);
 
 
@@ -64,7 +70,9 @@ void I2C1_Inits(void)
 {
 	I2C1Handle.pI2C = I2C1;
 	I2C1Handle.I2C_Config.I2C_ACKControl = I2C_ACK_ENABLE;
-	I2C1Handle.I2C_Config.I2C_DeviceAddress = 0x61;
+	I2C1Handle.I2C_Config.I2C_DeviceAddress = MY_ADDR;
+	I2C1Handle.I2C_Config.I2C_FMDutyCycle = I2C_FM_DUTY_2;
+	I2C1Handle.I2C_Config.I2C_SCLSpeed = I2C_SCL_SPEED_SM;
 
 }
 
@@ -89,8 +97,24 @@ void GPIO_Button_init(void)
 int main(void)
 {
 	initialise_monitor_handles();
-
 	printf("Running\n");
+
+	// i2c pin inits
+	I2C1_GPIOInits();
+
+	// i2c peripheral configuration
+	I2C1_Inits();
+
+	// enable the i2c peripheral
+	I2C_PeripheralControl(I2C1, ENABLE);
+
+	// wait for button press
+	while(GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13));
+	delay();
+
+	// send some data do the slave
+	I2C_MasterSendData(&I2C1Handle, some_data, strlen((char*)some_data), SLAVE_ADDR);
+
 
 	while(1){
 

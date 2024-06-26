@@ -191,6 +191,10 @@ void I2C_Init(I2C_Handle_t *pI2CHandle)
 {
 	uint32_t tempreg = 0;
 
+	// enable the clock for the i2c peripheral
+	I2C_PeriClockControl(pI2CHandle->pI2C, ENABLE);
+
+
 	tempreg |= (pI2CHandle->I2C_Config.I2C_ACKControl << 10);
 	pI2CHandle->pI2C->CR1 = tempreg;
 
