@@ -12,8 +12,8 @@
 
 /*
  * ARDUINO UNO PINS// ESP32:
- * SCL: A5
- * SDA: A4
+ * SCL: A5 // GPIO22
+ * SDA: A4 // GPIO21
  *
  * STM32 Board: (I2C1)
  *
