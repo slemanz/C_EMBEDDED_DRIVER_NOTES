@@ -41,15 +41,14 @@ static void I2C_GenerateStopCondition(I2C_RegDef_t *pI2Cx)
 /*********************************************************************
  * @fn      		  - I2C_PeripheralControl
  *
- * @brief             -
+ * @brief             - Enables or disables the specified I2C peripheral.
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - pI2Cx: Pointer to the I2C peripheral register definition structure
+ * @param[in]         - EnorDi: Enable or disable the I2C peripheral
  *
- * @return            -
+ * @return            - None
  *
- * @Note              -
+ * @Note              - This function controls the Peripheral Enable (PE) bit of the I2C_CR1 register.
 
  */
 
@@ -70,15 +69,14 @@ void I2C_PeripheralControl(I2C_RegDef_t *pI2Cx, uint8_t EnorDi)
 /*********************************************************************
  * @fn      		  - I2C_PeriClockControl
  *
- * @brief             -
+ * @brief             - Enables or disables the peripheral clock for the specified I2C port.
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - pI2Cx: Pointer to the I2C peripheral register definition structure
+ * @param[in]         - EnorDi: Enable or disable the peripheral clock
  *
- * @return            -
+ * @return            - None
  *
- * @Note              -
+ * @Note              - None
 
  */
 
