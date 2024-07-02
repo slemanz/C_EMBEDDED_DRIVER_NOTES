@@ -184,15 +184,13 @@ uint32_t RCC_GetPCLK1Value(void)
 /*********************************************************************
  * @fn      		  - I2C_Init
  *
- * @brief             -
+ * @brief             - Initializes the specified I2C peripheral with the given configuration settings.
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - pI2CHandle: Pointer to the I2C handle structure containing the I2C configuration settings
  *
- * @return            -
+ * @return            - None
  *
- * @Note              -
+ * @Note              - his function configures the I2C peripheral including clock enabling, addressing mode, and speed settings.
 
  */
 
@@ -263,20 +261,18 @@ void I2C_Init(I2C_Handle_t *pI2CHandle)
 
 
 
-/*********************************************************************
- * @fn      		  - I2C_DeInit
+/**
+ * @fn         - I2C_DeInit
  *
- * @brief             -
+ * @brief      - Resets the specified I2C peripheral and its registers to their default values.
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]  - pI2Cx: Pointer to the I2C peripheral register definition structure
  *
- * @return            -
+ * @return     - None
  *
- * @Note              -
-
+ * @Note       - This function resets the specified I2C peripheral using the appropriate reset macro.
  */
+
 
 void I2C_DeInit(I2C_RegDef_t *pI2Cx)
 {
@@ -287,7 +283,18 @@ void I2C_DeInit(I2C_RegDef_t *pI2Cx)
 
 
 
-
+/**
+ * @fn         - I2C_GetFlagStatus
+ *
+ * @brief      - Checks the status of the specified I2C flag.
+ *
+ * @param[in]  - pI2Cx: Pointer to the I2C peripheral register definition structure
+ * @param[in]  - FlagName: Name of the flag whose status needs to be checked
+ *
+ * @return     - uint8_t: FLAG_SET if the flag is set, FLAG_RESET otherwise
+ *
+ * @Note       - This function reads the status register SR1 to check the specified flag.
+ */
 
 
 uint8_t I2C_GetFlagStatus(I2C_RegDef_t *pI2Cx, uint32_t FlagName)
