@@ -328,7 +328,7 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxbuffer, uint32_t L
 	I2C_GenerateStartCondition(pI2CHandle->pI2Cx);
 
 
-	// 2. confirm that start generatio  is completed by checking the SB flag in the SR1
+	// 2. confirm that start generation  is completed by checking the SB flag in the SR1
 	// NOTE: until SB is cleared SCL will be stretched (pulled LOW)
 	while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_SB));
 
@@ -371,6 +371,73 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxbuffer, uint32_t L
 
 }
 
+/*********************************************************************
+ * @fn      		  - I2C_MasterReceiveData
+ *
+ * @brief             -
+ *
+ * @param[in]         -
+ * @param[in]         -
+ * @param[in]         -
+ *
+ * @return            -
+ *
+ * @Note              -
+
+ */
+
+void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint8_t Len, uint8_t SlaveAddr)
+{
+	//1. Generate the START condition
+	I2C_GenerateStartCondition(pI2CHandle->pI2Cx);
+
+	//2. confirm that start generetion is completed by checking the SB flag in the SR1
+	// Note: Until SB is cleared SCL will be stretched (pulled to LOW)
+	while(!I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_SB));
+
+	//3. Send the address of the slave with r/nw bit set to R(1) (total 8 bits)
+
+	//4. wait until address phase is completed by checking the ADDR flag in the SR1
+
+
+	//procedure to read only 1 byte from slava
+	if(Len == 1)
+	{
+		//Disable Acking
+
+		// clear the ADDR flag
+
+		//wait until RXNE becomes 1
+
+		//generate STOP condition
+
+		//read data in to buffer
+	}
+
+
+	//procedure to read data from slave when Len > 1
+	if(Len > 1)
+	{
+		//clear the ADDR flag
+
+		//read the data until Len becomes zero
+		for(uint32_t i = Len; i > 0; i--)
+		{
+			//wait until RXNE becomes 1
+			if(i == 2) // if last 2 bytes are remaining
+			{
+				// clear the ack bit
+
+				//generate STOP condition
+
+			}
+			//read the data from data register in to buffer
+
+			//increment the buffer address
+		}
+	}
+	//re-enable ACKing
+}
 
 
 /*********************************************************************
