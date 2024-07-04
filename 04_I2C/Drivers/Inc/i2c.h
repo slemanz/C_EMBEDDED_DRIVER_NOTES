@@ -99,6 +99,7 @@ void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint8_t
 
 void I2C_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi);
 void I2C_IRQPriorityConfig(uint8_t IRQNumber,uint32_t IRQPriority);
+void I2C_ManageAcking(I2C_RegDef_t *pI2Cx, uint8_t EnorDi);
 
 
 
