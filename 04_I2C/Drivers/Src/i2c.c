@@ -441,11 +441,11 @@ void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint8_t
 		//Disable Acking
 		I2C_ManageAcking(pI2CHandle->pI2Cx, I2C_ACK_DISABLE);
 
-		//generate STOP condition
-		I2C_GenerateStopCondition(pI2CHandle->pI2Cx);
-
 		// clear the ADDR flag
 		I2C_ClearADDRFlag(pI2CHandle->pI2Cx);
+
+		//generate STOP condition
+		I2C_GenerateStopCondition(pI2CHandle->pI2Cx);
 
 		//wait until RXNE becomes 1
 		while(! I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_RXNE));
