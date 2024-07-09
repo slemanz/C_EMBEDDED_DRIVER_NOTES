@@ -121,9 +121,8 @@ int main(void)
 	// enable the i2c peripheral
 	I2C_PeripheralControl(I2C1, ENABLE);
 
-
-
-
+	// ack bit is made 1 after PE=1
+	I2C_ManageAcking(I2C1, I2C_ACK_ENABLE);
 
 
 	printf("Ok!\n");
@@ -138,10 +137,15 @@ int main(void)
 		I2C_MasterSendData(&I2C1Handle, &commandcode, 1, SLAVE_ADDR);
 		I2C_MasterReceiveData(&I2C1Handle, &len, 1, SLAVE_ADDR);
 
+		printf("%d\n", len);
+
 
 		commandcode = 0x52;
 		I2C_MasterSendData(&I2C1Handle, &commandcode, 1, SLAVE_ADDR);
 		I2C_MasterReceiveData(&I2C1Handle, rcv_buf, len, SLAVE_ADDR);
+		rcv_buf[len+1] = '\0';
+
+		printf("Data : %s",rcv_buf);
 
 	}
 
