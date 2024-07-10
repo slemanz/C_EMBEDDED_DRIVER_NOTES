@@ -125,12 +125,13 @@ int main(void)
 	I2C_ManageAcking(I2C1, I2C_ACK_ENABLE);
 
 
-	printf("Ok!\n");
+
 
 	while(1){
 		// wait for button press
 		while(GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13));
 		delay();
+		printf("Ok!\n");
 
 		commandcode = 0x51;
 
