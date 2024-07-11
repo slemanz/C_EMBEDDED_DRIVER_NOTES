@@ -103,8 +103,8 @@ void GPIO_Button_init(void)
 
 int main(void)
 {
-	initialise_monitor_handles();
-	printf("Hello World!\n");
+	//initialise_monitor_handles();
+	//printf("Hello World!\n");
 
 
 	uint8_t commandcode;
@@ -118,8 +118,7 @@ int main(void)
 	// i2c peripheral configuration
 	I2C1_Inits();
 
-	// enable the i2c peripheral
-	I2C_PeripheralControl(I2C1, ENABLE);
+
 
 	// ack bit is made 1 after PE=1
 	I2C_ManageAcking(I2C1, I2C_ACK_ENABLE);
@@ -128,17 +127,20 @@ int main(void)
 
 
 	while(1){
+		// enable the i2c peripheral
+		I2C_PeripheralControl(I2C1, ENABLE);
+
 		// wait for button press
 		while(GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13));
 		delay();
-		printf("Ok!\n");
+		//printf("Ok!\n");
 
 		commandcode = 0x51;
 
 		I2C_MasterSendData(&I2C1Handle, &commandcode, 1, SLAVE_ADDR);
 		I2C_MasterReceiveData(&I2C1Handle, &len, 1, SLAVE_ADDR);
 
-		printf("%d\n", len);
+		//printf("%d\n", len);
 
 
 		commandcode = 0x52;
@@ -146,7 +148,10 @@ int main(void)
 		I2C_MasterReceiveData(&I2C1Handle, rcv_buf, len, SLAVE_ADDR);
 		rcv_buf[len+1] = '\0';
 
-		printf("Data : %s",rcv_buf);
+		//printf("Data : %s",rcv_buf);
+
+		// enable the i2c peripheral
+		I2C_PeripheralControl(I2C1, DISABLE);
 
 	}
 

@@ -100,8 +100,8 @@ void GPIO_Button_init(void)
 
 int main(void)
 {
-	initialise_monitor_handles();
-	printf("Hello World!\n");
+	//initialise_monitor_handles();
+	//printf("Hello World!\n");
 
 	GPIO_Button_init();
 
@@ -111,23 +111,29 @@ int main(void)
 	// i2c peripheral configuration
 	I2C1_Inits();
 
-	// enable the i2c peripheral
-	I2C_PeripheralControl(I2C1, ENABLE);
 
 
 
 
 
 
-	printf("Ok!\n");
+
+	//printf("Ok!\n");
 
 	while(1){
+		// enable the i2c peripheral
+			I2C_PeripheralControl(I2C1, ENABLE);
+
+
 		// wait for button press
 		while(GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13));
 		delay();
 
 		// send some data do the slave
 		I2C_MasterSendData(&I2C1Handle, some_data, strlen((char*)some_data), SLAVE_ADDR);
+
+		// disable the i2c peripheral
+		I2C_PeripheralControl(I2C1, DISABLE);
 
 	}
 
