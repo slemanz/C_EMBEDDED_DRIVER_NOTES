@@ -19,8 +19,8 @@ void setup() {
   // Define the LED pin as Output
   pinMode(LED, OUTPUT);
   
-  // Start the I2C Bus as Slave on specified address and pins
-  Wire.begin(SDA_PIN, SCL_PIN, SLAVE_ADDR); 
+  // Start the I2C Bus as Slave on specified address
+  Wire.begin(SLAVE_ADDR); 
   
   // Attach a function to trigger when something is received.
   Wire.onReceive(receiveEvent);
@@ -41,7 +41,7 @@ void requestEvent() {
   }
   
   if (active_command == 0x52) {
-    Wire.write(reinterpret_cast<const uint8_t*>(name_msg), get_len_of_data());
+    //Wire.write(reinterpret_cast<const uint8_t*>(name_msg), get_len_of_data());
     active_command = 0xff;
   }
 }

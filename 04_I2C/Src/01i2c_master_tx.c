@@ -122,7 +122,7 @@ int main(void)
 
 	while(1){
 		// enable the i2c peripheral
-			I2C_PeripheralControl(I2C1, ENABLE);
+		I2C_PeripheralControl(I2C1, ENABLE);
 
 
 		// wait for button press

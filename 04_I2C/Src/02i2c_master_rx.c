@@ -45,7 +45,7 @@ I2C_Handle_t I2C1Handle;
 uint8_t rcv_buf[32];
 
 // some data
-uint8_t some_data[] = "We are testing I2C! Hello.\n";
+uint8_t some_data[] = "\n";
 
 void I2C1_GPIOInits(void)
 {
@@ -120,33 +120,38 @@ int main(void)
 
 
 
-	// ack bit is made 1 after PE=1
-	I2C_ManageAcking(I2C1, I2C_ACK_ENABLE);
+
 
 
 
 
 	while(1){
-		// enable the i2c peripheral
-		I2C_PeripheralControl(I2C1, ENABLE);
 
 		// wait for button press
 		while(GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13));
 		delay();
 		//printf("Ok!\n");
 
+		// enable the i2c peripheral
+		I2C_PeripheralControl(I2C1, ENABLE);
+
+		// ack bit is made 1 after PE=1
+		//I2C_ManageAcking(I2C1, I2C_ACK_ENABLE);
+
+
 		commandcode = 0x51;
 
 		I2C_MasterSendData(&I2C1Handle, &commandcode, 1, SLAVE_ADDR);
-		I2C_MasterReceiveData(&I2C1Handle, &len, 1, SLAVE_ADDR);
+		//I2C_MasterReceiveData(&I2C1Handle, &len, 1, SLAVE_ADDR);
+		//I2C_MasterSendData(&I2C1Handle, some_data, strlen((char*)some_data), SLAVE_ADDR);
 
 		//printf("%d\n", len);
 
 
-		commandcode = 0x52;
-		I2C_MasterSendData(&I2C1Handle, &commandcode, 1, SLAVE_ADDR);
-		I2C_MasterReceiveData(&I2C1Handle, rcv_buf, len, SLAVE_ADDR);
-		rcv_buf[len+1] = '\0';
+		//commandcode = 0x52;
+		//I2C_MasterSendData(&I2C1Handle, &commandcode, 1, SLAVE_ADDR);
+		//I2C_MasterReceiveData(&I2C1Handle, rcv_buf, len, SLAVE_ADDR);
+		//rcv_buf[len+1] = '\0';
 
 		//printf("Data : %s",rcv_buf);
 
