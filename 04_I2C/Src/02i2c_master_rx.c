@@ -142,7 +142,7 @@ int main(void)
 		commandcode = 0x51;
 
 		I2C_MasterSendData(&I2C1Handle, &commandcode, 1, SLAVE_ADDR);
-		//I2C_MasterReceiveData(&I2C1Handle, &len, 1, SLAVE_ADDR);
+		I2C_MasterReceiveData(&I2C1Handle, &len, 1, SLAVE_ADDR);
 		//I2C_MasterSendData(&I2C1Handle, some_data, strlen((char*)some_data), SLAVE_ADDR);
 
 		//printf("%d\n", len);
