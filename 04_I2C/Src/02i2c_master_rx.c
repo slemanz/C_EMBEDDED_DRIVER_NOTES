@@ -32,6 +32,7 @@ extern void initialise_monitor_handles(void);
 #define MY_ADDR 0x61
 #define SLAVE_ADDR 0x68
 
+//#define DEBUG
 
 
 void delay(void)
@@ -103,8 +104,9 @@ void GPIO_Button_init(void)
 
 int main(void)
 {
+
 	//initialise_monitor_handles();
-	//printf("Hello World!\n");
+
 
 
 	uint8_t commandcode;
@@ -130,7 +132,6 @@ int main(void)
 		// wait for button press
 		while(GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13));
 		delay();
-		//printf("Ok!\n");
 
 		// enable the i2c peripheral
 		I2C_PeripheralControl(I2C1, ENABLE);
@@ -143,15 +144,23 @@ int main(void)
 
 		I2C_MasterSendData(&I2C1Handle, &commandcode, 1, SLAVE_ADDR);
 		I2C_MasterReceiveData(&I2C1Handle, &len, 1, SLAVE_ADDR);
-		//I2C_MasterSendData(&I2C1Handle, some_data, strlen((char*)some_data), SLAVE_ADDR);
 
 		//printf("%d\n", len);
 
 
-		//commandcode = 0x52;
-		//I2C_MasterSendData(&I2C1Handle, &commandcode, 1, SLAVE_ADDR);
-		//I2C_MasterReceiveData(&I2C1Handle, rcv_buf, len, SLAVE_ADDR);
-		//rcv_buf[len+1] = '\0';
+		//I2C_MasterSendData(&I2C1Handle, some_data, strlen((char*)some_data), SLAVE_ADDR);
+
+
+
+		if(len <= 32){
+			commandcode = 0x52;
+			I2C_MasterSendData(&I2C1Handle, &commandcode, 1, SLAVE_ADDR);
+			I2C_MasterReceiveData(&I2C1Handle, rcv_buf, len, SLAVE_ADDR);
+			rcv_buf[len+1] = '\0';
+		}
+
+
+
 
 		//printf("Data : %s",rcv_buf);
 

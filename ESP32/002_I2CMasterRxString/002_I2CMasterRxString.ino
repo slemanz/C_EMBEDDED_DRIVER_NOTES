@@ -36,12 +36,16 @@ void receiveEvent(int bytes) {
 void requestEvent() {
   if (active_command == 0x51) {
     uint8_t len = get_len_of_data();
+    len = 5;
     Wire.write(&len, 1);
     active_command = 0xff;
   }
   
   if (active_command == 0x52) {
-    Wire.write(reinterpret_cast<const uint8_t*>(name_msg), get_len_of_data());
+    //Wire.write(reinterpret_cast<const uint8_t*>(name_msg), get_len_of_data());
+    uint8_t buffer[3] = {'B', 'o', 'm'};
+    Wire.write(buffer, 3);
+
     active_command = 0xff;
   }
 }
