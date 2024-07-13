@@ -46,7 +46,7 @@ I2C_Handle_t I2C1Handle;
 uint8_t rcv_buf[32];
 
 // some data
-uint8_t some_data[] = "\n";
+uint8_t some_data[] = "Ola carai\n";
 
 void I2C1_GPIOInits(void)
 {
@@ -143,8 +143,8 @@ int main(void)
 		commandcode = 0x51;
 
 		I2C_MasterSendData(&I2C1Handle, &commandcode, 1, SLAVE_ADDR);
-		I2C_MasterReceiveData(&I2C1Handle, &len, 1, SLAVE_ADDR);
-
+		//I2C_MasterReceiveData(&I2C1Handle, &len, 1, SLAVE_ADDR);
+		len = 50;
 		//printf("%d\n", len);
 
 
@@ -154,6 +154,7 @@ int main(void)
 
 		if(len <= 32){
 			commandcode = 0x52;
+			commandcode = 'R';
 			I2C_MasterSendData(&I2C1Handle, &commandcode, 1, SLAVE_ADDR);
 			I2C_MasterReceiveData(&I2C1Handle, rcv_buf, len, SLAVE_ADDR);
 			rcv_buf[len+1] = '\0';

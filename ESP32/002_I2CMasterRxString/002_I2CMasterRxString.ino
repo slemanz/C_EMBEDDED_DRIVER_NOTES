@@ -1,7 +1,7 @@
 // Wire Slave Transmitter and receiver
 #include <Wire.h>
 
-int LED = 13;
+int LED = 2;
 uint8_t active_command = 0xff, led_status = 0;
 char name_msg[32] = "Welcome to FastBit EBA\n";
 
@@ -20,19 +20,26 @@ void setup() {
   pinMode(LED, OUTPUT);
   
   // Start the I2C Bus as Slave on specified address
-  Wire.begin(SLAVE_ADDR); 
+  Wire.begin(SLAVE_ADDR);
+  Serial.begin(9600);
   
   // Attach a function to trigger when something is received.
   Wire.onReceive(receiveEvent);
-  Wire.onRequest(requestEvent);
+  //Wire.onRequest(requestEvent);
 }
 
 // write
 void receiveEvent(int bytes) {
-  active_command = Wire.read(); // read one character from the I2C 
+  while (Wire.available()) {
+    active_command = Wire.read();
+  }
+  //active_command = Wire.read(); // read one character from the I2C 
+
+  Serial.println("Received!");
 }
 
 // read
+/*
 void requestEvent() {
   if (active_command == 0x51) {
     uint8_t len = get_len_of_data();
@@ -48,7 +55,7 @@ void requestEvent() {
 
     active_command = 0xff;
   }
-}
+}*/
 
 void loop() {
   // Empty loop
