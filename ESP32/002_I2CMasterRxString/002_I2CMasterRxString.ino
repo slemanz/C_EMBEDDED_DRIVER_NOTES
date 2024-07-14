@@ -1,9 +1,8 @@
-// Wire Slave Transmitter and receiver
 #include <Wire.h>
 
 int LED = 2;
 uint8_t active_command = 0xff, led_status = 0;
-char name_msg[32] = "Welcome to FastBit EBA\n";
+char name_msg[32] = "Welcome!\n";
 
 uint16_t device_id = 0xFF45;
 
@@ -25,7 +24,9 @@ void setup() {
   
   // Attach a function to trigger when something is received.
   Wire.onReceive(receiveEvent);
-  //Wire.onRequest(requestEvent);
+  Wire.onRequest(requestEvent); // Isso deve ser descomentado
+  
+  Serial.println("I2C Slave Initialized");
 }
 
 // write
@@ -33,29 +34,26 @@ void receiveEvent(int bytes) {
   while (Wire.available()) {
     active_command = Wire.read();
   }
-  //active_command = Wire.read(); // read one character from the I2C 
-
   Serial.println("Received!");
+  Serial.println(active_command, HEX);
 }
 
 // read
-/*
 void requestEvent() {
   if (active_command == 0x51) {
-    uint8_t len = get_len_of_data();
-    len = 5;
+    uint8_t len = 10;
+    //uint8_t len = 10;
     Wire.write(&len, 1);
     active_command = 0xff;
   }
-  
-  if (active_command == 0x52) {
-    //Wire.write(reinterpret_cast<const uint8_t*>(name_msg), get_len_of_data());
-    uint8_t buffer[3] = {'B', 'o', 'm'};
-    Wire.write(buffer, 3);
 
+  if (active_command == 0x52) {
+    Wire.write(name_msg);
+    //uint8_t enviar = 'A';
+    //Wire.write(&enviar, 1);
     active_command = 0xff;
   }
-}*/
+}
 
 void loop() {
   // Empty loop
