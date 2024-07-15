@@ -143,9 +143,8 @@ int main(void)
 		I2C_MasterReceiveData(&I2C1Handle,&len,1,SLAVE_ADDR);
 
 
-
-		delay();
 		commandcode = 0x52;
+		//len = 10;
 		I2C_MasterSendData(&I2C1Handle,&commandcode,1,SLAVE_ADDR);
 
 
