@@ -106,6 +106,7 @@ int main(void)
 {
 
 	//initialise_monitor_handles();
+	//printf("Hello world!\n");
 
 
 
@@ -124,10 +125,6 @@ int main(void)
 	I2C_PeripheralControl(I2C1, ENABLE);
 
 
-
-
-
-
 	while(1){
 
 		// wait for button press
@@ -135,26 +132,20 @@ int main(void)
 		delay();
 
 
-
 		commandcode = 0x51;
-
 		I2C_MasterSendData(&I2C1Handle,&commandcode,1,SLAVE_ADDR);
-
 		I2C_MasterReceiveData(&I2C1Handle,&len,1,SLAVE_ADDR);
 
 
 		commandcode = 0x52;
-		//len = 10;
 		I2C_MasterSendData(&I2C1Handle,&commandcode,1,SLAVE_ADDR);
-
-
 		I2C_MasterReceiveData(&I2C1Handle,rcv_buf,len,SLAVE_ADDR);
 
 		rcv_buf[len+1] = '\0';
 
 
 
-		//printf("Data : %s",rcv_buf);
+		//printf("Data: %s",rcv_buf);
 
 		// enable the i2c peripheral
 		//I2C_PeripheralControl(I2C1, DISABLE);
