@@ -124,6 +124,9 @@ int main(void)
 	// enable the i2c peripheral
 	I2C_PeripheralControl(I2C1, ENABLE);
 
+	// enable AKCing after PE = 1
+	I2C_ManageAcking(I2C1,I2C_ACK_ENABLE);
+
 
 	while(1){
 

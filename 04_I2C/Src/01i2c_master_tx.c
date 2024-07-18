@@ -114,15 +114,17 @@ int main(void)
 
 
 
+	// enable the i2c peripheral
+	I2C_PeripheralControl(I2C1, ENABLE);
 
-
+	// enable AKCing after PE = 1
+	I2C_ManageAcking(I2C1,I2C_ACK_ENABLE);
 
 
 	//printf("Ok!\n");
 
 	while(1){
-		// enable the i2c peripheral
-		I2C_PeripheralControl(I2C1, ENABLE);
+
 
 
 		// wait for button press
@@ -132,8 +134,6 @@ int main(void)
 		// send some data do the slave
 		I2C_MasterSendData(&I2C1Handle, some_data, strlen((char*)some_data), SLAVE_ADDR);
 
-		// disable the i2c peripheral
-		I2C_PeripheralControl(I2C1, DISABLE);
 
 	}
 
