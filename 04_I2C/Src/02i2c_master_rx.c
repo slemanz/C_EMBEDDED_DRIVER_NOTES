@@ -140,18 +140,17 @@ int main(void)
 		I2C_MasterReceiveData(&I2C1Handle,&len,1,SLAVE_ADDR);
 
 
-		//commandcode = 0x52;
-		//I2C_MasterSendData(&I2C1Handle,&commandcode,1,SLAVE_ADDR);
-		//I2C_MasterReceiveData(&I2C1Handle,rcv_buf,len,SLAVE_ADDR);
+		commandcode = 0x52;
+		I2C_MasterSendData(&I2C1Handle,&commandcode,1,SLAVE_ADDR);
+		I2C_MasterReceiveData(&I2C1Handle,rcv_buf,len,SLAVE_ADDR);
 
-		//rcv_buf[len+1] = '\0';
+		rcv_buf[len+1] = '\0';
 
 
 
 		//printf("Data: %s",rcv_buf);
 
 		// enable the i2c peripheral
-		//I2C_PeripheralControl(I2C1, DISABLE);
 
 	}
 
