@@ -343,15 +343,18 @@ uint8_t I2C_GetFlagStatus(I2C_RegDef_t *pI2Cx, uint32_t FlagName)
 /*********************************************************************
  * @fn      		  - I2C_MasterSendData
  *
- * @brief             -
+ * @brief             - Function to send data to a specified I2C slave device.
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - *pI2CHandle: Pointer to the I2C handle structure.
+ * @param[in]         - *pTxbuffer: Pointer to the data buffer to be transmitted.
+ * @param[in]         - Len: Length of data to be transmitted.
+ * @param[in]     	  - SlaveAddr: Address of the I2C slave device to communicate with.
  *
- * @return            -
+ * @return            - None
  *
- * @Note              -
+ * @Note              - This function generates a start condition, sends the slave address with the
+ * 				        write bit, transmits the specified length of data, and generates a stop condition.
+ *                      The function blocks until each operation is completed!
 
  */
 
@@ -407,16 +410,20 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxbuffer, uint32_t L
 /*********************************************************************
  * @fn      		  - I2C_MasterReceiveData
  *
- * @brief             -
+ * @brief             - Function to receive data from a specified I2C slave device.
  *
- * @param[in]         -
- * @param[in]         -
- * @param[in]         -
+ * @param[in]         - *pI2CHandle: Pointer to the I2C handle structure.
+ * @param[in]         - *pRxBuffer: Pointer to the buffer where the received data will be stored.
+ * @param[in]         - Len: Length of data to be received
+ * @param[in]         - SlaveAddr: Address of the I2C slave device to read from.
  *
- * @return            -
+ * @return            - None
  *
- * @Note              -
-
+ * @Note              - This function generates a start condition, sends the slave address with the read bit,
+ *                      and receives the specified length of data from the slave device. It handles
+ *                      both cases of receiving one byte and multiple bytes of data.
+ *                      The function blocks until each operation is completed!s
+ *
  */
 
 void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint8_t Len, uint8_t SlaveAddr)
