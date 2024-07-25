@@ -137,13 +137,14 @@ int main(void)
 		printf("DATA: ");
 
 
+		// with repeated start
 		commandcode = 0x51;
-		I2C_MasterSendData(&I2C1Handle,&commandcode,1,SLAVE_ADDR, I2C_DISABLE_SR );
-		I2C_MasterReceiveData(&I2C1Handle,&len,1,SLAVE_ADDR, I2C_DISABLE_SR );
+		I2C_MasterSendData(&I2C1Handle,&commandcode,1,SLAVE_ADDR, I2C_ENABLE_SR ); // for no repeated: I2C_DISABLE_SR
+		I2C_MasterReceiveData(&I2C1Handle,&len,1,SLAVE_ADDR, I2C_ENABLE_SR ); // for no repeated: I2C_DISABLE_SR
 
 
 		commandcode = 0x52;
-		I2C_MasterSendData(&I2C1Handle,&commandcode,1,SLAVE_ADDR, I2C_DISABLE_SR );
+		I2C_MasterSendData(&I2C1Handle,&commandcode,1,SLAVE_ADDR, I2C_ENABLE_SR ); // for no repeated: I2C_DISABLE_SR
 		I2C_MasterReceiveData(&I2C1Handle,rcv_buf,len,SLAVE_ADDR, I2C_DISABLE_SR );
 
 		rcv_buf[len+1] = '\0';
