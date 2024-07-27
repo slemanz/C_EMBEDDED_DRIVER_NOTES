@@ -292,14 +292,17 @@ void I2C_DeInit(I2C_RegDef_t *pI2Cx)
 /**
  * @fn         - I2C_ManageAcking
  *
- * @brief      -
+ * @brief      - Manages the acknowledgment (ACK) setting for the I2C peripheral.
+ *               This function enables or disables the acknowledgment feature
+ *               in the I2C peripheral based on the parameter provided.
  *
- * @param[in]  -
- * @param[in]  -
+ * @param[in]  - pI2Cx: Pointer to the I2C peripheral's register definition.
+ * @param[in]  - EnorDi: This parameter decides whether to enable or disable ACK.
  *
- * @return     -
+ * @return     - None
  *
- * @Note       -
+ * @Note       - This function directly modifies the CR1 register of the I2C
+ *               peripheral to enable or disable the acknowledgment feature.
  */
 
 
