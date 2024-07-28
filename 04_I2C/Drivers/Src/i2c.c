@@ -508,6 +508,53 @@ void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint8_t
 }
 
 
+
+/*********************************************************************
+ * @fn      		  - I2C_MasterSendDataIT
+ *
+ * @brief             -
+ *
+ * @param[in]         -
+ * @param[in]         -
+ * @param[in]         -
+ *
+ * @return            -
+ *
+ * @Note              -
+
+ */
+
+uint8_t I2C_MasterSendDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pTxbuffer, uint32_t Len, uint8_t SlaveAddr, uint8_t Sr)
+{
+
+
+}
+
+
+
+
+/*********************************************************************
+ * @fn      		  - I2C_MasterReceiveDataIT
+ *
+ * @brief             -
+ *
+ * @param[in]         -
+ * @param[in]         -
+ * @param[in]         -
+ *
+ * @return            -
+ *
+ * @Note              -
+
+ */
+
+
+uint8_t I2C_MasterReceiveDataIT(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint8_t Len, uint8_t SlaveAddr, uint8_t Sr)
+{
+
+}
+
+
 /*********************************************************************
  * @fn      		  - I2C_IRQInterruptConfig
  *
@@ -522,6 +569,8 @@ void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint8_t
  * @Note              -
 
  */
+
+
 void I2C_IRQInterruptConfig(uint8_t IRQNumber, uint8_t EnorDi)
 {
 
