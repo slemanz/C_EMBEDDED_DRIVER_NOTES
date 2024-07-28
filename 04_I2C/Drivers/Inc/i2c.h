@@ -26,10 +26,10 @@ typedef struct
 {
 	I2C_RegDef_t 	*pI2Cx;
 	I2C_Config_t 	I2C_Config;
-	uint8_t 		*TxBuffer;		/*< To store the app. Tx buffer address >*/
+	uint8_t 		*pTxBuffer;		/*< To store the app. Tx buffer address >*/
 	uint8_t			*pRxBuffer;		/*< To store the app. Rx buffer address >*/
 	uint32_t 		TxLen;			/*< To store Tx Len >*/
-	uint32_t		TxRxState;		/*< To store Rx Len >*/
+	uint32_t		RxLen;			/*< To store Rx Len >*/
 	uint8_t			TxRxState; 		/*< To store communication state >*/
 	uint8_t			DevAddr;		/*< To store slave/device address >*/
 	uint32_t		RxSize;			/*< To store Rx size >*/
