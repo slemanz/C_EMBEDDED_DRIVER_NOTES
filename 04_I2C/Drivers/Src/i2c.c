@@ -721,7 +721,18 @@ void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle)
 	// Note: SB flag is only applicable in Master mode
 	if(temp1 && temp3)
 	{
-		// SB flag is set
+		// The interrupt is generated because of SB event
+		// this block will not be executed in slave mode
+		// in this block lets executed the address phase
+		if(pI2CHandle->TxRxState == I2C_BUSY_IN_TX)
+		{
+			I2C_ExecuteAddressPhaseWrite(pI2CHandle->pI2Cx, pI2CHandle->DevAddr);
+		}else if(pI2CHandle->TxRxState == I2C_BUSY_IN_RX)
+		{
+			I2C_ExecuteAddressPhaseRead(pI2CHandle->pI2Cx, pI2CHandle->DevAddr);
+		}
+
+
 	}
 
 
@@ -732,6 +743,7 @@ void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle)
 	if(temp1 && temp3)
 	{
 		// ADDR flag is set
+		I2C_ClearADDRFlag(pI2CHandle->pI2Cx);
 	}
 
 	temp3 = pI2CHandle->pI2Cx->SR1 & (1 << I2C_SR1_BTF);
@@ -739,6 +751,30 @@ void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle)
 	if(temp1 && temp3)
 	{
 		// BTF flag is set
+		if(pI2CHandle->TxRxState == I2C_BUSY_IN_TX)
+		{
+			// make sure that TXE is also set.
+			if(pI2CHandle->pI2Cx->SR1 & (1 << I2C_SR1_TXE))
+			{
+				// BTF, TXE = 1
+				if(pI2CHandle->TxLen == 0)
+				{
+					// 1. generate the STOP condition
+					if(pI2CHandle->Sr == I2C_DISABLE_SR)
+						I2C_GenerateStopCondition(pI2CHandle->pI2Cx);
+
+					// 2. reset all the member elements of the handle structure
+					I2C_CloseSendData();
+
+					// 3. notify the application about transmission complete
+					I2C_ApplicationEventCallback(pI2CHandle, I2C_EV_TX_CMPLT)
+				}
+			}
+
+		}else if(pI2CHandle->TxRxState == I2C_BUSY_IN_RX)
+		{
+
+		}
 	}
 
 	temp3 = pI2CHandle->pI2Cx->SR1 & (1 << I2C_SR1_STOPF);

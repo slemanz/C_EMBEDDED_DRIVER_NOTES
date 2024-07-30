@@ -142,6 +142,9 @@ void I2C_ManageAcking(I2C_RegDef_t *pI2Cx, uint8_t EnorDi);
  */
 
 void I2C_ApplicationEventCallback(I2C_Handle_t *pI2CHandle, uint8_t AppEv);
+
+
+
 uint32_t RCC_GetPCLK1Value(void);
 
 
