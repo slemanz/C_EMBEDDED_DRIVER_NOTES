@@ -6,7 +6,7 @@ uint16_t APB1_PreScaler[8] = {2, 4, 8, 16};
 static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx);
 static void I2C_ExecuteAddressPhaseWrite(I2C_RegDef_t *pI2Cx, uint8_t SlaveAddr);
 static void I2C_ExecuteAddressPhaseRead(I2C_RegDef_t *pI2Cx, uint8_t SlaveAddr);
-static void I2C_ClearADDRFlag(I2C_RegDef_t *pI2Cx);
+static void I2C_ClearADDRFlag(I2C_Handle_t *pI2CHandle);
 static void I2C_GenerateStopCondition(I2C_RegDef_t *pI2Cx);
 
 
@@ -32,11 +32,38 @@ static void I2C_ExecuteAddressPhaseRead(I2C_RegDef_t *pI2Cx, uint8_t SlaveAddr)
 	pI2Cx->DR = SlaveAddr;
 }
 
-static void I2C_ClearADDRFlag(I2C_RegDef_t *pI2Cx)
+static void I2C_ClearADDRFlag(I2C_Handle_t *pI2CHandle)
 {
-	uint32_t dummyRead = pI2Cx->SR1;
-	dummyRead = pI2Cx->SR2;
-	(void)dummyRead;
+	uint32_t dummy_read;
+
+	// check for device mode
+	if(pI2CHandle->pI2Cx->SR2 & (1 << I2C_SR2_MSL))
+	{
+		// device is in master mode
+		if(pI2CHandle->TxRxState == I2C_BUSY_IN_RX)
+		{
+			if(pI2CHandle->RxSize == 1)
+			{
+				// first disable the ack
+				I2C_ManageAcking(pI2CHandle->pI2Cx, DISABLE);
+
+				// clear the ADDR flag (read SR1, read SR2)
+				dummy_read = pI2CHandle->pI2Cx->SR1;
+				dummy_read = pI2CHandle->pI2Cx->SR2;
+				(void)dummy_read;
+			}
+		}else
+		{
+			// clear the ADDR flag (read SR1, read SR2)
+			dummy_read = pI2CHandle->pI2Cx->SR1;
+			dummy_read = pI2CHandle->pI2Cx->SR2;
+			(void)dummy_read;
+		}
+
+	}else
+	{
+		// device is in slave mode
+	}
 
 }
 
@@ -822,6 +849,19 @@ void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle)
 	if(temp1 && temp2 && temp3)
 	{
 		// RXNE flag is set
+		if(pI2CHandle->TxRxState == I2C_BUSY_IN_RX)
+		{
+			// We have to do the data reception
+			if(pI2CHandle->RxSize == 1)
+			{
+
+			}
+
+			if(pI2CHandle->RxSize > 1)
+			{
+
+			}
+		}
 	}
 }
 
