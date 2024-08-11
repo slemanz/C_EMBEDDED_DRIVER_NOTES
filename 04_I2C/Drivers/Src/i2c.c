@@ -409,7 +409,7 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxbuffer, uint32_t L
 
 	// 5. clear the ADDR flag according to its software sequence
 	// Note: until ADDR is cleared SCL will be stretched (pulled to LOW)
-	I2C_ClearADDRFlag(pI2CHandle->pI2Cx);
+	I2C_ClearADDRFlag(pI2CHandle);
 
 	// 6. send the data until Len becomes 0
 
@@ -486,7 +486,7 @@ void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint8_t
 		I2C_ManageAcking(pI2CHandle->pI2Cx, I2C_ACK_DISABLE);
 
 		// clear the ADDR flag
-		I2C_ClearADDRFlag(pI2CHandle->pI2Cx);
+		I2C_ClearADDRFlag(pI2CHandle);
 
 		//wait until RXNE becomes 1
 		while(! I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_RXNE));
@@ -505,7 +505,7 @@ void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint8_t
 	if(Len > 1)
 	{
 		//clear the ADDR flag
-		I2C_ClearADDRFlag(pI2CHandle->pI2Cx);
+		I2C_ClearADDRFlag(pI2CHandle);
 
 		//read the data until Len becomes zero
 		for(uint32_t i = Len; i > 0; i--)
@@ -830,7 +830,7 @@ void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle)
 	if(temp1 && temp3)
 	{
 		// ADDR flag is set
-		I2C_ClearADDRFlag(pI2CHandle->pI2Cx);
+		I2C_ClearADDRFlag(pI2CHandle);
 	}
 
 	temp3 = pI2CHandle->pI2Cx->SR1 & (1 << I2C_SR1_BTF);
@@ -854,7 +854,7 @@ void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle)
 					I2C_CloseSendData();
 
 					// 3. notify the application about transmission complete
-					I2C_ApplicationEventCallback(pI2CHandle, I2C_EV_TX_CMPLT)
+					I2C_ApplicationEventCallback(pI2CHandle, I2C_EV_TX_CMPLT);
 				}
 			}
 

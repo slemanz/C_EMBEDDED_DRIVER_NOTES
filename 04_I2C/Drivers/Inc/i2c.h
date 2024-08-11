@@ -87,6 +87,16 @@ typedef struct
 #define I2C_BUSY_IN_RX			1
 #define I2C_BUSY_IN_TX			2
 
+/*
+ * I2C application events macros
+ */
+
+#define I2C_EV_TX_CMPLT			0
+#define I2C_EV_RX_CMPLT			1
+#define I2C_EV_STOP				2
+
+
+
 
 /********************************************************************************************
  * 								APIs supported by this driver
