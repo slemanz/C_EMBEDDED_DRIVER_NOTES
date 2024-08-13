@@ -981,7 +981,7 @@ void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandle)
 		pI2CHandle->pI2Cx->SR1 &= ~(1 << I2C_SR1_AF);
 
 		//Implement the code to notify the application about the error
-		I2C_ApplicationEventCallback(pI2CHandle, I2C_ERROR_AF)
+		I2C_ApplicationEventCallback(pI2CHandle, I2C_ERROR_AF);
 	}
 
 /***********************Check for Overrun/underrun error************************************/
