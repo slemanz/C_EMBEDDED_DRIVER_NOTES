@@ -32,8 +32,8 @@ extern void initialise_monitor_handles(void);
 #define MY_ADDR 0x61
 #define SLAVE_ADDR 0x68
 
-//#define DEBUG
-
+// Flag variable
+uint8_t rxComplt = RESET;
 
 void delay(void)
 {
@@ -154,9 +154,12 @@ int main(void)
 
 
 
-
+		// wait till rx complete
+		while(rxComplt != SET);
 		rcv_buf[len+1] = '\0';
 		printf("%s",rcv_buf);
+
+		rxComplt = RESET;
 	}
 
 	return 0;
@@ -182,11 +185,19 @@ void I2C_ApplicationEventCallback(I2C_Handle_t *pI2CHandle, uint8_t AppEv)
 	}else if(AppEv == I2C_EV_RX_CMPLT)
 	{
 		printf("Rx is completed\n");
+		rxComplt = SET;
 	}else if(AppEv == I2C_ERROR_AF)
 	{
 		printf("Error: Ack failure");
 		// in master ack failure happens when slave fails to send ack for the byte
 		// sent from the master
+		I2C_CloseSendData(pI2CHandle);
+
+		// generate the stop condition to release the bus
+		I2C_GenerateStopCondition(I2C1);
+
+		// Hang in infinite loop
+		while(1);
 	}
 }
 
