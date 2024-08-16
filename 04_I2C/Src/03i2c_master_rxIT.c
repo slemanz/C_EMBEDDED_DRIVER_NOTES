@@ -150,15 +150,14 @@ int main(void)
 
 		commandcode = 0x52;
 		while(I2C_MasterSendDataIT(&I2C1Handle,&commandcode,1,SLAVE_ADDR, I2C_ENABLE_SR ) != I2C_READY);
-		while(I2C_MasterReceiveDataIT(&I2C1Handle,&len,1,SLAVE_ADDR, I2C_DISABLE_SR) != I2C_READY);
+		while(I2C_MasterReceiveDataIT(&I2C1Handle,rcv_buf,len,SLAVE_ADDR, I2C_DISABLE_SR) != I2C_READY);
 
 
 		rxComplt = RESET;
 		// wait till rx complete
 		while(rxComplt != SET);
 		rcv_buf[len+1] = '\0';
-		printf("%d\n", len);
-		printf("DATA: %s\n",rcv_buf);
+		printf("DATA: %s",rcv_buf);
 
 		rxComplt = RESET;
 	}
@@ -182,10 +181,10 @@ void I2C_ApplicationEventCallback(I2C_Handle_t *pI2CHandle, uint8_t AppEv)
 {
 	if(AppEv == I2C_EV_TX_CMPLT)
 	{
-		//printf("Tx is completed\n");
+		printf("Tx is completed\n");
 	}else if(AppEv == I2C_EV_RX_CMPLT)
 	{
-		//printf("Rx is completed\n");
+		printf("Rx is completed\n");
 		rxComplt = SET;
 	}else if(AppEv == I2C_ERROR_AF)
 	{
