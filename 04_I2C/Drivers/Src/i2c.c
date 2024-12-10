@@ -540,6 +540,47 @@ void I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRxBuffer, uint8_t
 }
 
 
+/*********************************************************************
+ * @fn      		  - I2C_SlaveSendData
+ *
+ * @brief             -
+ *
+ * @param[in]         -
+ * @param[in]         -
+ * @param[in]         -
+ *
+ * @return            -
+ *
+ * @Note              -
+
+ */
+
+void I2C_SlaveSendData(I2C_RegDef_t *pI2C, uint8_t data)
+{
+
+}
+
+/*********************************************************************
+ * @fn      		  - I2C_SlaveReceiveData
+ *
+ * @brief             -
+ *
+ * @param[in]         -
+ * @param[in]         -
+ * @param[in]         -
+ *
+ * @return            -
+ *
+ * @Note              -
+
+ */
+
+uint8_t I2C_SlaveReceiveData(I2C_RegDef_t *pI2C)
+{
+
+}
+
+
 
 /*********************************************************************
  * @fn      		  - I2C_MasterSendDataIT
