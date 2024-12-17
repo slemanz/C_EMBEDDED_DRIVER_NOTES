@@ -99,6 +99,8 @@ typedef struct
 #define I2C_ERROR_AF			5
 #define I2C_ERROR_OVR			6
 #define I2C_ERROR_TIMEOUT		7
+#define I2C_EV_DATA_REQ			8
+#define I2C_EV_DATA_RCV			9
 
 
 
