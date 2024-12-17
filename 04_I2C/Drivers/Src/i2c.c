@@ -1130,6 +1130,10 @@ void I2C_CloseSendData(I2C_Handle_t *pI2CHandle)
 	pI2CHandle->pTxBuffer = NULL;
 }
 
+void I2C_SlaveEnableDisableCallbackEvents(I2C_RegDef_t *pI2Cx, uint8_t EnorDi)
+{
+
+}
 
 
 
