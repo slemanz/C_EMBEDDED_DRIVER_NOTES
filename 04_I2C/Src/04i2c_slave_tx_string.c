@@ -165,7 +165,24 @@ void I2C1_ER_IRQHandler(void)
 
 void I2C_ApplicationEventCallback(I2C_Handle_t *pI2CHandle, uint8_t AppEv)
 {
+	if(AppEv == I2C_EV_DATA_REQ)
+	{
+		// master wants some data, slave has to send it
 
+	}else if(AppEv == I2C_EV_DATA_RCV)
+	{
+		// data is waiting for the slave to read, slave has to read it
+	}else if(AppEv == I2C_ERROR_AF)
+	{
+		// this happens only during slave txing
+		// master has sent the NACK. so slave should understand that master doesnt need
+		// more data.
+	}else if(AppEv == I2C_EV_STOP)
+	{
+		// this happens only during slave reception
+		// master has ended the i2c communication with the slave.
+
+	}
 }
 
 
