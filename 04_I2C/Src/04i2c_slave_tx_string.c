@@ -93,11 +93,6 @@ int main(void)
 	//initialise_monitor_handles();
 	//printf("Code init!\n");
 
-
-
-	uint8_t commandcode;
-	uint8_t len;
-
 	GPIO_Button_init();
 
 	// i2c pin inits
@@ -119,34 +114,7 @@ int main(void)
 	I2C_ManageAcking(I2C1,I2C_ACK_ENABLE);
 
 
-	while(1)
-	{
-
-		// wait for button press
-		while(GPIO_ReadFromInputPin(GPIOC, GPIO_PIN_NO_13));
-		delay();
-
-
-		// with repeated start
-		commandcode = 0x51;
-		while(I2C_MasterSendDataIT(&I2C1Handle,&commandcode,1,SLAVE_ADDR, I2C_ENABLE_SR ) != I2C_READY);
-		while(I2C_MasterReceiveDataIT(&I2C1Handle,&len,1,SLAVE_ADDR, I2C_ENABLE_SR ) != I2C_READY);
-
-
-
-		commandcode = 0x52;
-		while(I2C_MasterSendDataIT(&I2C1Handle,&commandcode,1,SLAVE_ADDR, I2C_ENABLE_SR ) != I2C_READY);
-		while(I2C_MasterReceiveDataIT(&I2C1Handle,rcv_buf,len,SLAVE_ADDR, I2C_DISABLE_SR) != I2C_READY);
-
-
-		rxComplt = RESET;
-		// wait till rx complete
-		while(rxComplt != SET);
-		rcv_buf[len+1] = '\0';
-		printf("DATA: %s",rcv_buf);
-
-		rxComplt = RESET;
-	}
+	while(1);
 
 	return 0;
 
@@ -163,20 +131,37 @@ void I2C1_ER_IRQHandler(void)
 
 }
 
+
+
 void I2C_ApplicationEventCallback(I2C_Handle_t *pI2CHandle, uint8_t AppEv)
 {
+	static uint8_t commandCode = 0;
+	static uint8_t Cnt = 0;
+
 	if(AppEv == I2C_EV_DATA_REQ)
 	{
 		// master wants some data, slave has to send it
+		if(commandCode == 0x51)
+		{
+			// send the len information to master
+			I2C_SlaveSendData(pI2CHandle->pI2Cx, strlen((char*)tx_buf));
+		}else if(commandCode == 0x52)
+		{
+			// send the data of tx_buf
+			I2C_SlaveSendData(pI2CHandle->pI2Cx, tx_buf[Cnt++]);
 
+		}
 	}else if(AppEv == I2C_EV_DATA_RCV)
 	{
 		// data is waiting for the slave to read, slave has to read it
+		commandCode = I2C_SlaveReceiveData(pI2CHandle->pI2Cx);
 	}else if(AppEv == I2C_ERROR_AF)
 	{
 		// this happens only during slave txing
 		// master has sent the NACK. so slave should understand that master doesnt need
 		// more data.
+		commandCode = 0xFF;
+		Cnt = 0;
 	}else if(AppEv == I2C_EV_STOP)
 	{
 		// this happens only during slave reception
