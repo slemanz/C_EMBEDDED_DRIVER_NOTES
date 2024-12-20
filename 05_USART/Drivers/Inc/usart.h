@@ -134,8 +134,8 @@ void USART_IRQHandling(USART_Handle_t *pHandle);
 /*
  * Other Peripheral Control APIs
  */
-void USART_PeripheralControl(USART_RegDef_t *pUSARTx, uint8_t EnOrDi);
-uint8_t USART_GetFlagStatus(USART_RegDef_t *pUSARTx , uint32_t FlagName);
+void USART_PeripheralControl(USART_RegDef_t *pUSARTx, uint8_t EnorDi);
+uint8_t USART_GetFlagStatus(USART_RegDef_t *pUSARTx , uint8_t FlagName);
 void USART_ClearFlag(USART_RegDef_t *pUSARTx, uint16_t StatusFlagName);
 
 
