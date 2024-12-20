@@ -124,6 +124,37 @@ void USART_Init(USART_Handle_t *pUSARTHandle)
 	pUSARTHandle->pUSARTx->CR1 = tempreg;
 
 	// *** Configuration of CR2 **************************************
+	tempreg = 0;
+
+	tempreg |= (pUSARTHandle->USART_Config.USART_NoOfStopBits << USART_CR2_STOP);
+
+	// program the CR2 register
+	pUSARTHandle->pUSARTx->CR2 = tempreg;
+
+	// *** Configuration of CR3 **************************************
+	tempreg=0;
+
+		//Configuration of USART hardware flow control
+		if ( pUSARTHandle->USART_Config.USART_HWFlowControl == USART_HW_FLOW_CTRL_CTS)
+		{
+			//Implement the code to enable CTS flow control
+			tempreg |= ( 1 << USART_CR3_CTSE);
+
+
+		}else if (pUSARTHandle->USART_Config.USART_HWFlowControl == USART_HW_FLOW_CTRL_RTS)
+		{
+			//Implement the code to enable RTS flow control
+			tempreg |= ( 1 << USART_CR3_RTSE);
+
+		}else if (pUSARTHandle->USART_Config.USART_HWFlowControl == USART_HW_FLOW_CTRL_CTS_RTS)
+		{
+			//Implement the code to enable both CTS and RTS Flow control
+			tempreg |= ((1 << USART_CR3_CTSE) | ( 1 << USART_CR3_RTSE));
+		}
+
+		pUSARTHandle->pUSARTx->CR3 = tempreg;
+
+		// *** Configuration of BRR (Baudrate) ***********************
 }
 
 /*********************************************************************
