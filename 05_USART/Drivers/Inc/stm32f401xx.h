@@ -179,7 +179,7 @@ typedef struct{
 }SPI_RegDef_t;
 
 /*
- * Peripheral register definition I@C
+ * Peripheral register definition I2C
  */
 
 typedef struct{
@@ -194,6 +194,21 @@ typedef struct{
 	__vo uint32_t TRISE;
 	__vo uint32_t FLTR;
 }I2C_RegDef_t;
+
+/*
+ * Peripheral register definition USART
+ */
+
+typedef struct
+{
+  __vo uint32_t SR;
+  __vo uint32_t DR;
+  __vo uint32_t BRR;
+  __vo uint32_t CR1;
+  __vo uint32_t CR2;
+  __vo uint32_t CR3;
+  __vo uint32_t GTPR;
+} USART_RegDef_t;
 
 
 /*
@@ -219,6 +234,10 @@ typedef struct{
 #define I2C1			((I2C_RegDef_t*)I2C1_BASEADDR)
 #define I2C2			((I2C_RegDef_t*)I2C2_BASEADDR)
 #define I2C3			((I2C_RegDef_t*)I2C3_BASEADDR)
+
+#define USART1			((USART_RegDef_t*)USART1_BASEADDR)
+#define USART2			((USART_RegDef_t*)USART2_BASEADDR)
+#define USART6			((USART_RegDef_t*)USART6_BASEADDR)
 
 
 /*
