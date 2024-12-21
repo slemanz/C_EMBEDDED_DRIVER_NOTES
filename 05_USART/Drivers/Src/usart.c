@@ -339,6 +339,75 @@ void USART_ReceiveData(USART_Handle_t *pUSARTHandle, uint8_t *pRxBuffer, uint32_
 }
 
 /*********************************************************************
+ * @fn      		  - USART_SendDataWithIT
+ *
+ * @brief             -
+ *
+ * @param[in]         -
+ * @param[in]         -
+ * @param[in]         -
+ *
+ * @return            -
+ *
+ * @Note              -
+
+ */
+uint8_t USART_SendDataIT(USART_Handle_t *pUSARTHandle,uint8_t *pTxBuffer, uint32_t Len)
+{
+	uint8_t txstate = pUSARTHandle->TxBusyState;
+
+	if(txstate != USART_BUSY_IN_TX)
+	{
+		pUSARTHandle->TxLen = Len;
+		pUSARTHandle->pTxBuffer = pTxBuffer;
+		pUSARTHandle->TxBusyState = USART_BUSY_IN_TX;
+
+		// Enable interrupt for TXE
+		pUSARTHandle->pUSARTx->CR1 |= ( 1 << USART_CR1_TXEIE);
+
+		// Enable interrupt for TC
+		pUSARTHandle->pUSARTx->CR1 |= ( 1 << USART_CR1_TCIE);
+	}
+
+	return txstate;
+
+}
+
+
+/*********************************************************************
+ * @fn      		  - USART_ReceiveDataIT
+ *
+ * @brief             -
+ *
+ * @param[in]         -
+ * @param[in]         -
+ * @param[in]         -
+ *
+ * @return            -
+ *
+ * @Note              -
+
+ */
+uint8_t USART_ReceiveDataIT(USART_Handle_t *pUSARTHandle,uint8_t *pRxBuffer, uint32_t Len)
+{
+	uint8_t rxstate = pUSARTHandle->RxBusyState;
+
+	if(rxstate != USART_BUSY_IN_RX)
+	{
+		pUSARTHandle->RxLen = Len;
+		pUSARTHandle->pRxBuffer = pRxBuffer;
+		pUSARTHandle->RxBusyState = USART_BUSY_IN_RX;
+
+		// Enable interrupt for RXNE
+		pUSARTHandle->pUSARTx->CR1 |= ( 1 << USART_CR1_RXNEIE);
+	}
+
+	return rxstate;
+
+}
+
+
+/*********************************************************************
  * @fn      		  - USART_IRQInterruptConfig
  *
  * @brief             -
