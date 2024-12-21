@@ -59,7 +59,6 @@ void GPIO_ButtonInit(void)
 	GPIO_Init(&GPIOBtn);
 
 	//this is led gpio configuration
-	GPIO_Handle_t GpioLed;
 
 	GpioLed.pGPIOx = GPIOC;
 	GpioLed.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_10;
