@@ -620,6 +620,10 @@ typedef struct
 #define IRQ_NO_I2C3_EV		72
 #define IRQ_NO_I2C3_ER		73
 
+#define IRQ_NO_USART1	    37
+#define IRQ_NO_USART2	    38
+#define IRQ_NO_USART6	    71
+
 /*
  * IRQ Priority levels
  */
