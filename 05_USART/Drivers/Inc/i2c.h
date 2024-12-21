@@ -169,9 +169,6 @@ void I2C_ApplicationEventCallback(I2C_Handle_t *pI2CHandle, uint8_t AppEv);
 
 
 
-uint32_t RCC_GetPCLK1Value(void);
-
-
 
 
 

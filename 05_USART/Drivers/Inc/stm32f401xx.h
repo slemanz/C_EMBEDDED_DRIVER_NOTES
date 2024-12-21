@@ -632,6 +632,8 @@ typedef struct
  * Drivers includes
  */
 
+#include "stm32f401xx.h"
+#include "rcc.h"
 #include "gpio.h"
 #include "spi.h"
 #include "i2c.h"
