@@ -60,15 +60,47 @@ void ds1407_set_current_time(RTC_time_t *rtc_time)
 }
 
 
-void ds1407_get_current_time(RTC_time_t *rtc_time);
-
-void ds1407_set_current_date(RTC_date_t *rtc_date)
+void ds1407_get_current_time(RTC_time_t *rtc_time)
 {
+	uint8_t seconds, hrs;
 
+	seconds = ds1307_read(DS1307_ADDR_SEC);
+
+	seconds &= ~(1 << 7);
+	rtc_time->seconds = bcd_to_binary(seconds);
+	rtc_time->minutes = bcd_to_binary(ds1307_read(DS1307_ADDR_MIN));
+
+	hrs = ds1307_read(DS1307_ADDR_HRS);
+	if(hrs & (1 << 6))
+	{
+		// 12 hr format
+		rtc_time->time_format = !(hrs & (1 << 5) == 0);
+		hrs &= ~(0x3 << 5); /// clear 6 and 5
+	}else
+	{
+		// 24 hr format
+		rtc_time->time_format = TIME_FORMAT_24HRS;
+	}
+	rtc_time->hours = bcd_to_binary(hrs);
 }
 
 
-void ds1407_get_current_date(RTC_date_t *rtc_date);
+void ds1407_set_current_date(RTC_date_t *rtc_date)
+{
+	ds1307_write(binary_to_bcd(rtc_date->date), DS1307_ADDR_DATE);
+	ds1307_write(binary_to_bcd(rtc_date->month), DS1307_ADDR_MONTH);
+	ds1307_write(binary_to_bcd(rtc_date->year), DS1307_ADDR_YEAR);
+	ds1307_write(binary_to_bcd(rtc_date->day), DS1307_ADDR_DAY);
+}
+
+
+void ds1407_get_current_date(RTC_date_t *rtc_date)
+{
+	rtc_date->day = bcd_to_binary(ds1307_read(DS1307_ADDR_DAY));
+	rtc_date->date = bcd_to_binary(ds1307_read(DS1307_ADDR_DATE));
+	rtc_date->month = bcd_to_binary(ds1307_read(DS1307_ADDR_MONTH));
+	rtc_date->year = bcd_to_binary(ds1307_read(DS1307_ADDR_YEAR));
+}
 
 static void ds1307_i2c_pin_config(void)
 {
