@@ -38,13 +38,13 @@ int main(void)
 	current_date.month = 12;
 	current_date.year = 24;
 
-	current_time.hours = 4;
-	current_time.minutes = 25;
-	current_time.seconds = 41;
+	current_time.hours = 16;
+	current_time.minutes = 8;
+	current_time.seconds = 0;
 	current_time.time_format = TIME_FORMAT_24HRS;
 
-	ds1307_set_current_time(&current_time);
-	ds1307_set_current_date(&current_date);
+	//ds1307_set_current_time(&current_time);
+	//ds1307_set_current_date(&current_date);
 
 
 	ds1307_get_current_date(&current_date);
