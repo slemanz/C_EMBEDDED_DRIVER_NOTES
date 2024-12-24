@@ -361,19 +361,14 @@ void I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTxbuffer, uint32_t L
 	while(! I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_FLAG_BTF));
 
 
-
 	// 8. Generate STOP condition and master need not to wait for the completion of stop condition.
 	// Note: generating STOP, automatically clears the BTF
 	if(Sr == I2C_DISABLE_SR )
 	{
 		I2C_GenerateStopCondition(pI2CHandle->pI2Cx);
 	}
-
-
-
-
-
 }
+
 
 /*********************************************************************
  * @fn      		  - I2C_MasterReceiveData
