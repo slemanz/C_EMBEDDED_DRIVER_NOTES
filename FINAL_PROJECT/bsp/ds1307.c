@@ -12,6 +12,9 @@ static void ds1307_i2c_config(void);
 static void ds1307_write(uint8_t value, uint8_t reg_addr);
 static uint8_t ds1307_read(uint8_t reg_addr);
 
+static uint8_t binary_to_bcd(uint8_t value);
+static uint8_t bcd_to_binary(uint8_t value);
+
 I2C_Handle_t g_ds1307I2cHandle;
 
 // returns 1 : CH = 1	; init failed
@@ -74,7 +77,7 @@ void ds1407_get_current_time(RTC_time_t *rtc_time)
 	if(hrs & (1 << 6))
 	{
 		// 12 hr format
-		rtc_time->time_format = !(hrs & (1 << 5) == 0);
+		rtc_time->time_format = !((hrs & (1 << 5)) == 0);
 		hrs &= ~(0x3 << 5); /// clear 6 and 5
 	}else
 	{
@@ -163,4 +166,32 @@ static uint8_t ds1307_read(uint8_t reg_addr)
 	I2C_MasterReceiveData(&g_ds1307I2cHandle, &data, 1, DS1307_I2C_ADDRESS, 0);
 
 	return data;
+}
+
+static uint8_t binary_to_bcd(uint8_t value)
+{
+	uint8_t m, n;
+	uint8_t bcd;
+
+	bcd = value;
+	if(value >= 10)
+	{
+		m = value/10;
+		n = value % 10;
+		bcd = (uint8_t)((m << 4) | n);
+	}
+
+	return bcd;
+}
+
+static uint8_t bcd_to_binary(uint8_t value)
+{
+	uint8_t m, n;
+	uint8_t bin;
+
+	m = (uint8_t)((value >> 4) * 10);
+	n = value & (uint8_t)0x0F;
+
+	bin = m + n;
+	return bin;
 }
