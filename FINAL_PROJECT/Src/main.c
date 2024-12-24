@@ -22,10 +22,42 @@ void delay(void)
 
 int main(void)
 {
+	RTC_time_t current_time;
+	RTC_date_t current_date;
+
+	if(ds1307_init())
+	{
+		while(1)
+		{
+			__asm("NOP"); // error
+		}
+	}
+
+	current_date.day = TUESDAY;
+	current_date.date = 24;
+	current_date.month = 1;
+	current_date.year = 24;
+
+	current_time.hours = 4;
+	current_time.minutes = 25;
+	current_time.seconds = 41;
+	current_time.time_format = TIME_FORMAT_24HRS;
+
+	ds1307_set_current_date(&current_date);
+	ds1307_set_current_time(&current_time);
+
+	ds1307_get_current_date(&current_date);
+	ds1307_get_current_time(&current_time);
+
+	char *am_pm;
+	if(current_time.time_format != TIME_FORMAT_24HRS)
+	{
+		am_pm = (current_time.time_format ? "PM" : "AM");
+	}
 
     while(1)
     {
-
+    	__asm("NOP");
     }
 
 }
