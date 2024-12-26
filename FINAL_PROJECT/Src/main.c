@@ -11,7 +11,8 @@
 #include "stm32f401xx.h"
 #include "ds1307.h"
 
-#define DS1307_SET		1
+#define SYSTICK_TIM_CLK		16000000
+#define DS1307_SET			0
 
 
 void init_systick_timer(uint32_t tick_hz)
@@ -20,6 +21,20 @@ void init_systick_timer(uint32_t tick_hz)
 	uint32_t *pSCSR = (uint32_t*)0xE000E010;
 
 	/* calculation of reload */
+	uint32_t count_value = (SYSTICK_TIM_CLK/tick_hz) - 1;
+
+	// clear the value of SVR
+	*pSRVR &= ~(0x00FFFFFF);
+
+	// load the value in to SVR
+	*pSRVR |= count_value;
+
+	// do some settings
+	*pSCSR |= (1 << 1); // enables systick exception request
+	*pSCSR |= (1 << 2); /// indicates the clock source, processor clock source
+
+	// enable the systick
+	*pSCSR |= (1 << 0); // enables the counter
 }
 
 
@@ -97,7 +112,6 @@ int main(void)
 		}
 	}
 
-
 #if (DS1307_SET)
 	current_date.day = THURSDAY;
 	current_date.date = 26;
@@ -105,7 +119,7 @@ int main(void)
 	current_date.year = 24;
 
 	current_time.hours = 4;
-	current_time.minutes = 3;
+	current_time.minutes = 32;
 	current_time.seconds = 0;
 	current_time.time_format = TIME_FORMAT_24HRS;
 
@@ -113,6 +127,8 @@ int main(void)
 	ds1307_set_current_date(&current_date);
 
 #endif
+
+	init_systick_timer(1);
 
 	ds1307_get_current_time(&current_time);
 	ds1307_get_current_date(&current_date);
@@ -126,12 +142,20 @@ int main(void)
 
     while(1)
     {
-    	ds1307_get_current_date(&current_date);
-		ds1307_get_current_time(&current_time);
     	__asm("NOP");
     }
 
 }
 
+void SysTick_Handler(void)
+{
+	RTC_time_t current_time;
+	RTC_date_t current_date;
+
+	ds1307_get_current_time(&current_time);
+	ds1307_get_current_date(&current_date);
+
+	__asm("NOP");
+}
 
 
