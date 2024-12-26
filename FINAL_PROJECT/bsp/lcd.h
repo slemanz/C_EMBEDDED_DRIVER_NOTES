@@ -23,6 +23,7 @@
 #define LCD_GPIO_D7	   		GPIO_PIN_NO_12
 
 void lcd_init(void);
-
+void lcd_send_command(uint8_t cmd);
+void lcd_send_char(uint8_t data);
 
 #endif /* LCD_H_ */
