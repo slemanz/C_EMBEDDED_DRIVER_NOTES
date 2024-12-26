@@ -16,7 +16,7 @@
 #define DS1307_I2C_SDA_PIN		GPIO_PIN_NO_7
 #define DS1307_I2C_SCL_PIN		GPIO_PIN_NO_6
 #define DS1307_I2C_SPEED		I2C_SCL_SPEED_SM
-#define DS1307_I2C_PUPD			GPIO_NO_PUPD
+#define DS1307_I2C_PUPD			GPIO_PIN_PU
 
 
 /* Register addresses */
@@ -33,6 +33,8 @@
 #define TIME_FORMAT_24HRS		2
 
 #define DS1307_I2C_ADDRESS		0x68
+
+#define DS1307_CH_BIT			7
 
 // sunday can be defined as any day, only keep logic sequential!
 #define SUNDAY		1;

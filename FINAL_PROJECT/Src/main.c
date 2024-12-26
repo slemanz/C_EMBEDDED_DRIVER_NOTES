@@ -11,7 +11,7 @@
 #include "stm32f401xx.h"
 #include "ds1307.h"
 
-
+#define DS1307_SET		0
 
 
 
@@ -27,28 +27,32 @@ int main(void)
 
 	if(ds1307_init())
 	{
-		while(1)
+			while(1)
 		{
 			__asm("NOP"); // error
 		}
 	}
 
-	current_date.day = TUESDAY;
-	current_date.date = 24;
+
+#if (DS1307_SET)
+	current_date.day = WEDNESDAY;
+	current_date.date = 25;
 	current_date.month = 12;
 	current_date.year = 24;
 
-	current_time.hours = 16;
-	current_time.minutes = 8;
+	current_time.hours = 19;
+	current_time.minutes = 3;
 	current_time.seconds = 0;
 	current_time.time_format = TIME_FORMAT_24HRS;
 
-	//ds1307_set_current_time(&current_time);
-	//ds1307_set_current_date(&current_date);
+	ds1307_set_current_time(&current_time);
+	ds1307_set_current_date(&current_date);
 
+#endif
 
-	ds1307_get_current_date(&current_date);
 	ds1307_get_current_time(&current_time);
+	ds1307_get_current_date(&current_date);
+
 
 	char *am_pm;
 	if(current_time.time_format != TIME_FORMAT_24HRS)
@@ -58,6 +62,8 @@ int main(void)
 
     while(1)
     {
+    	ds1307_get_current_date(&current_date);
+		ds1307_get_current_time(&current_time);
     	__asm("NOP");
     }
 

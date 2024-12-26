@@ -30,11 +30,18 @@ uint8_t ds1307_init(void)
 	// 3. Enable the I2C peripheral
 	I2C_PeripheralControl(DS1307_I2C, ENABLE);
 
-	// 4. make clock halt = 0
-	ds1307_write(0x00, DS1307_ADDR_SEC);
-
-	/// 5. Read back clock halt bit
+	/// 4. Read clock halt bit
 	uint8_t clock_state = ds1307_read(DS1307_ADDR_SEC);
+
+	if((clock_state >> DS1307_CH_BIT) & 0x1)
+	{
+		// 5. make clock halt = 0
+		ds1307_write(0x00, DS1307_ADDR_SEC);
+
+		/// 6. Read back clock halt bit
+		uint8_t clock_state = ds1307_read(DS1307_ADDR_SEC);
+	}
+
 
 	return ((clock_state >> 7) & 0x1);
 }
