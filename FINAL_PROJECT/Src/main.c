@@ -10,9 +10,11 @@
 #include<string.h>
 #include "stm32f401xx.h"
 #include "ds1307.h"
+#include "lcd.h"
 
 #define SYSTICK_TIM_CLK		16000000
 #define DS1307_SET			0
+#define LCD_TEST			0
 
 
 void init_systick_timer(uint32_t tick_hz)
@@ -40,7 +42,7 @@ void init_systick_timer(uint32_t tick_hz)
 
 char* get_day_of_week(uint8_t i)
 {
-	char* days[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+	char* days[] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
 
 	return days[i-1];
 }
@@ -104,6 +106,16 @@ int main(void)
 	RTC_time_t current_time;
 	RTC_date_t current_date;
 
+	lcd_init();
+
+#if (LCD_TEST)
+	lcd_print_string("RTC test...");
+	mdelay(2000);
+#endif
+
+	lcd_display_clear();
+	lcd_display_return_home();
+
 	if(ds1307_init())
 	{
 			while(1)
@@ -114,14 +126,14 @@ int main(void)
 
 #if (DS1307_SET)
 	current_date.day = THURSDAY;
-	current_date.date = 26;
+	current_date.date = 27;
 	current_date.month = 12;
 	current_date.year = 24;
 
 	current_time.hours = 4;
-	current_time.minutes = 32;
+	current_time.minutes = 39;
 	current_time.seconds = 0;
-	current_time.time_format = TIME_FORMAT_24HRS;
+	current_time.time_format = TIME_FORMAT_12HRS_AM;
 
 	ds1307_set_current_time(&current_time);
 	ds1307_set_current_date(&current_date);
@@ -138,7 +150,18 @@ int main(void)
 	if(current_time.time_format != TIME_FORMAT_24HRS)
 	{
 		am_pm = (current_time.time_format ? "PM" : "AM");
+		lcd_print_string(time_to_string(&current_time));
+		lcd_print_string(am_pm);
+	}else
+	{
+		lcd_print_string(time_to_string(&current_time));
 	}
+
+	lcd_set_cursor(2, 1);
+	lcd_print_string(date_to_string(&current_date));
+	lcd_send_char(' ');
+	lcd_print_string(get_day_of_week(current_date.day));
+
 
     while(1)
     {
@@ -155,6 +178,24 @@ void SysTick_Handler(void)
 	ds1307_get_current_time(&current_time);
 	ds1307_get_current_date(&current_date);
 
+	lcd_display_clear();
+	lcd_display_return_home();
+
+	char *am_pm;
+	if(current_time.time_format != TIME_FORMAT_24HRS)
+	{
+		am_pm = (current_time.time_format ? "PM" : "AM");
+		lcd_print_string(time_to_string(&current_time));
+		lcd_print_string(am_pm);
+	}else
+	{
+		lcd_print_string(time_to_string(&current_time));
+	}
+
+	lcd_set_cursor(2, 1);
+	lcd_print_string(date_to_string(&current_date));
+	lcd_send_char(' ');
+	lcd_print_string(get_day_of_week(current_date.day));
 	__asm("NOP");
 }
 

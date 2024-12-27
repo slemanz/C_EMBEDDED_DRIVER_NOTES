@@ -65,6 +65,7 @@ typedef struct
 
 // functions
 uint8_t ds1307_init(void);
+void mdelay(uint32_t cnt);
 
 void ds1307_set_current_time(RTC_time_t *rtc_time);
 void ds1307_get_current_time(RTC_time_t *rtc_time);

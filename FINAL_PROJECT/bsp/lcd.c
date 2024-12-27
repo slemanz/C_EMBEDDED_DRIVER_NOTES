@@ -10,7 +10,6 @@
 
 static void write_4_bits(uint8_t value);
 static void lcd_enable(void);
-static void mdelay(uint32_t cnt);
 static void udelay(uint32_t cnt);
 
 
@@ -43,10 +42,39 @@ void lcd_send_char(uint8_t data)
 
 void lcd_display_clear(void)
 {
-	write_4_bits(LCD_CMD_DIS_CLEAR);
+	lcd_send_command(LCD_CMD_DIS_CLEAR);
 	mdelay(2);
 }
 
+void lcd_print_string(char *message)
+{
+	do
+	{
+		lcd_send_char((uint8_t)*message++);
+	}while(*message != '\0');
+}
+
+void lcd_display_return_home(void)
+{
+	lcd_send_command(LCD_CMD_DIS_RETURN_HOME);
+	mdelay(2);
+}
+
+void lcd_set_cursor(uint8_t row, uint8_t column)
+{
+	column--;
+	switch (row)
+	{
+		case 1:
+			lcd_send_command((column |= 0x80));
+			break;
+		case 2:
+			lcd_send_command((column |= 0xC0));
+			break;
+		default:
+			break;
+	}
+}
 
 void lcd_init(void)
 {
@@ -110,16 +138,16 @@ void lcd_init(void)
 	write_4_bits(0x2);
 
 	// function set command
-	write_4_bits(LCD_CMD_4DL_2N_5X8F);
+	lcd_send_command(LCD_CMD_4DL_2N_5X8F);
 
 	// display ON and cursor ON
-	write_4_bits(LCD_CMD_DON_CURON);
+	lcd_send_command(LCD_CMD_DON_CURON);
 
 	// display clear
 	lcd_display_clear();
 
 	// entry mode set
-	write_4_bits(LCD_CMD_INCAD);
+	lcd_send_command(LCD_CMD_INCAD);
 
 }
 
@@ -143,7 +171,7 @@ static void lcd_enable(void)
 	udelay(100);
 }
 
-static void mdelay(uint32_t cnt)
+void mdelay(uint32_t cnt)
 {
 	for(uint32_t i = 0; i < (cnt * 1000); i++)
 	{
