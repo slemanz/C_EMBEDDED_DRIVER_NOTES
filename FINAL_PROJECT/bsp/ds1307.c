@@ -39,7 +39,7 @@ uint8_t ds1307_init(void)
 		ds1307_write(0x00, DS1307_ADDR_SEC);
 
 		/// 6. Read back clock halt bit
-		uint8_t clock_state = ds1307_read(DS1307_ADDR_SEC);
+		clock_state = ds1307_read(DS1307_ADDR_SEC);
 	}
 
 

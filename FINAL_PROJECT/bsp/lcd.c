@@ -10,6 +10,10 @@
 
 static void write_4_bits(uint8_t value);
 static void lcd_enable(void);
+static void mdelay(uint32_t cnt);
+static void udelay(uint32_t cnt);
+
+
 
 void lcd_send_command(uint8_t cmd)
 {
@@ -33,8 +37,14 @@ void lcd_send_char(uint8_t data)
 	/* R/nW = 0 for write */
 	GPIO_WriteToOutputPin(LCD_GPIO_PORT, LCD_GPIO_RW, GPIO_PIN_RESET);
 
-	write_4_bits(cmd >> 4);   /* Higher nibble */
-	write_4_bits(cmd & 0x0F); /* Lower nibble */
+	write_4_bits(data >> 4);   /* Higher nibble */
+	write_4_bits(data & 0x0F); /* Lower nibble */
+}
+
+void lcd_display_clear(void)
+{
+	write_4_bits(LCD_CMD_DIS_CLEAR);
+	mdelay(2);
 }
 
 
@@ -98,6 +108,19 @@ void lcd_init(void)
 
 	write_4_bits(0x3);
 	write_4_bits(0x2);
+
+	// function set command
+	write_4_bits(LCD_CMD_4DL_2N_5X8F);
+
+	// display ON and cursor ON
+	write_4_bits(LCD_CMD_DON_CURON);
+
+	// display clear
+	lcd_display_clear();
+
+	// entry mode set
+	write_4_bits(LCD_CMD_INCAD);
+
 }
 
 
@@ -118,4 +141,20 @@ static void lcd_enable(void)
 	udelay(10);
 	GPIO_WriteToOutputPin(LCD_GPIO_PORT, LCD_GPIO_EN, GPIO_PIN_RESET);
 	udelay(100);
+}
+
+static void mdelay(uint32_t cnt)
+{
+	for(uint32_t i = 0; i < (cnt * 1000); i++)
+	{
+		__asm("NOP");
+	}
+}
+
+static void udelay(uint32_t cnt)
+{
+	for(uint32_t i = 0; i < (cnt * 1); i++)
+	{
+		__asm("NOP");
+	}
 }
