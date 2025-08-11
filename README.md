@@ -1,6 +1,4 @@
-# C EMBEDDED DRIVER NOTES
+# MCU Driver Notes
 
-## DRIVERS
-
-- [2 - GPIO](02_GPIO/)
-
+- [Fundamentals](FUNDAMENTALS/)
+- [Deep Dive](DEEP_DIVE/)
