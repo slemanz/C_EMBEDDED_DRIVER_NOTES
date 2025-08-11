@@ -1,4 +1,4 @@
-SPI DRIVER
+# SPI DRIVER
 
 The SPI driver API requirements:
 

@@ -1,4 +1,4 @@
-I2c DRIVER
+# I2C DRIVER
 
 The I2C driver API requirements:
 
