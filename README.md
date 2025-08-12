@@ -1,4 +1,10 @@
 # MCU Driver Notes
 
 - [Fundamentals](FUNDAMENTALS/)
-- [Deep Dive](DEEP_DIVE/)
+- [Bare Dive](BARE_DIVE/)
+
+---
+
+Other topics:
+
+- **[Great Commits Examples](commits.md)**
