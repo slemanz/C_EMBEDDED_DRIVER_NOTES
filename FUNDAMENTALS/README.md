@@ -1,6 +1,8 @@
-# C EMBEDDED DRIVER NOTES
+# C EMBEDDED DRIVER FUNDAMENTALS
 
 ## DRIVERS
 
-- [2 - GPIO](02_GPIO/)
+- [01 - Clock](01_Clock/)
+- [02 - Gpio](02_Gpio/)
+- [03 - Spi](03_Spi/)
 
