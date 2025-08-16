@@ -12,7 +12,7 @@ void GPIO_Init(GPIO_TypeDef *GPIOx, uint16_t pin, GPIO_Mode mode, GPIO_Pull pull
 
 void GPIO_WritePin(GPIO_TypeDef *GPIOx, uint16_t pin, GPIO_PinState state) {
     if (state == GPIO_PIN_SET) {
-        GPIOx->BSRR = (1 << pin);
+        GPIOx->BSRR = (1 << (pin));
     } else {
         GPIOx->BSRR = (1 << (pin + 16));
     }
