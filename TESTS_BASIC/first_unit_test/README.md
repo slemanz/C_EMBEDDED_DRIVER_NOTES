@@ -50,3 +50,12 @@ stm32_unit_test/
 └── stubs/
     └── stm32f4xx.h
 ```
+
+### Creating a Simple GPIO Driver
+
+Let's create a basic GPIO driver for our STM32F411.
+
+- [src/gpio.h](src/gpio.h)
+- [src/gpio.c](src/gpio.c)
+
+### Writing Unit Tests with CppUTest
