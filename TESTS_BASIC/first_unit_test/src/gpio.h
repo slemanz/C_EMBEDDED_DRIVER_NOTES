@@ -33,6 +33,11 @@ typedef struct {
     uint32_t AFR[2];    // GPIO alternate function registers
 } GPIO_TypeDef;
 
+// Function pointer types for dependency injection
+typedef void (*GPIO_Init_Func)(GPIO_TypeDef*, uint16_t, GPIO_Mode, GPIO_Pull);
+typedef void (*GPIO_Write_Func)(GPIO_TypeDef*, uint16_t, GPIO_PinState);
+typedef GPIO_PinState (*GPIO_Read_Func)(GPIO_TypeDef*, uint16_t);
+
 // Function prototypes
 void GPIO_Init(GPIO_TypeDef *GPIOx, uint16_t pin, GPIO_Mode mode, GPIO_Pull pull);
 void GPIO_WritePin(GPIO_TypeDef *GPIOx, uint16_t pin, GPIO_PinState state);

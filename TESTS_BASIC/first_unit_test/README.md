@@ -59,3 +59,6 @@ Let's create a basic GPIO driver for our STM32F411.
 - [src/gpio.c](src/gpio.c)
 
 ### Writing Unit Tests with CppUTest
+
+- [tests/AllTests.cpp](tests/AllTests.cpp)
+- [tests/test_gpio.cpp](tests/test_gpio.cpp)

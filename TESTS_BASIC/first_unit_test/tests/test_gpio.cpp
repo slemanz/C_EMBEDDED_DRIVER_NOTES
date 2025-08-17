@@ -49,3 +49,20 @@ TEST(GPIO_Tests, GPIO_WritePin_Set)
     GPIO_WritePin(&testGPIO, 7, GPIO_PIN_SET);
     UNSIGNED_LONGS_EQUAL(1 << 7, testGPIO.BSRR);
 }
+
+TEST(GPIO_Tests, GPIO_WritePin_Reset)
+{
+    GPIO_WritePin(&testGPIO, 4, GPIO_PIN_RESET);
+    UNSIGNED_LONGS_EQUAL(1 << (4+16), testGPIO.BSRR);
+}
+
+// Test GPIO read operations
+TEST(GPIO_Tests, GPIO_ReadPin_High) {
+    testGPIO.IDR = (1 << 2);
+    LONGS_EQUAL(GPIO_PIN_SET, GPIO_ReadPin(&testGPIO, 2));
+}
+
+TEST(GPIO_Tests, GPIO_ReadPin_Low) {
+    testGPIO.IDR = 0;
+    LONGS_EQUAL(GPIO_PIN_RESET, GPIO_ReadPin(&testGPIO, 1));
+}
