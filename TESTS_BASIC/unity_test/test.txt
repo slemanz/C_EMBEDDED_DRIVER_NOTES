@@ -1,0 +1,11 @@
+mkdir -p build
+gcc -I unity -I src src/math_utils.c tests/test_math_utils.c unity/unity.c -o build/run_tests
+./build/run_tests
+
+tests/test_math_utils.c:33:test_add:PASS
+tests/test_math_utils.c:34:test_add_zero:PASS
+tests/test_math_utils.c:35:test_add_two_plus_two:PASS
+
+-----------------------
+3 Tests 0 Failures 0 Ignored 
+OK
